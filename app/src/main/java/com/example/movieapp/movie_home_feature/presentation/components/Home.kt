@@ -53,7 +53,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
         item {
             HomeLayout(navController)
             TitleText(text = "Trending Movies")
-            GetPopularMeals(viewModel = viewModel)
+            GetTrendingMovies(viewModel = viewModel)
             TitleText(text = "Trending Tv")
             GetTrendingTv(viewModel = viewModel)
             TitleText(text = "Trending People")
@@ -96,7 +96,7 @@ fun TitleText(text: String) {
 }
 
 @Composable
-fun GetPopularMeals(viewModel: HomeViewModel) {
+fun GetTrendingMovies(viewModel: HomeViewModel) {
     val trendingMoviesState by viewModel.movies.collectAsStateWithLifecycle()
     when (val resource = trendingMoviesState) {
         is Resource.Loading -> {
@@ -110,7 +110,7 @@ fun GetPopularMeals(viewModel: HomeViewModel) {
 
         is Resource.Success -> {
             val movies = resource.data?.trendingMovies
-            PopularMealList(movieThumbs = movies ?: emptyList())
+            TrendingMovieList(movies = movies ?: emptyList())
         }
 
         is Resource.Error -> {
@@ -122,15 +122,14 @@ fun GetPopularMeals(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun PopularMealList(movieThumbs: List<Movies>) {
+fun TrendingMovieList(movies: List<Movies>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            //   .height(260.dp)
             .fillMaxHeight()
     ) {
         LazyRow {
-            items(movieThumbs) { movie ->
+            items(movies) { movie ->
                 Card(
                     modifier = Modifier
                         .padding(9.dp)
@@ -153,7 +152,7 @@ fun PopularMealList(movieThumbs: List<Movies>) {
                         )
                         Image(
                             painter = painter,
-                            contentDescription = "food",
+                            contentDescription = "movie",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
@@ -189,7 +188,7 @@ fun GetTrendingTv(viewModel: HomeViewModel) {
 
         is Resource.Success -> {
             val people = resource.data?.trendingTv
-            TrendingTvList(tvThumbs = people ?: emptyList())
+            TrendingTvList(tv = people ?: emptyList())
         }
 
         is Resource.Error -> {
@@ -201,13 +200,13 @@ fun GetTrendingTv(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun TrendingTvList(tvThumbs: List<Tv>) {
+fun TrendingTvList(tv: List<Tv>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
         LazyRow {
-            items(tvThumbs) { tv ->
+            items(tv) { tv ->
                 Card(
                     modifier = Modifier
                         .padding(9.dp)
@@ -230,7 +229,7 @@ fun TrendingTvList(tvThumbs: List<Tv>) {
                         )
                         Image(
                             painter = painter,
-                            contentDescription = "food",
+                            contentDescription = "tv",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
@@ -266,11 +265,11 @@ fun GetTrendingPeople(viewModel: HomeViewModel) {
 
         is Resource.Success -> {
             val people = resource.data?.trendingPeople
-            TrendingPeopleList(tvThumbs = people ?: emptyList())
+            TrendingPeopleList(people = people ?: emptyList())
         }
 
         is Resource.Error -> {
-            val message = resource.message ?: "Error fetching news"
+            val message = resource.message ?: "Error fetching people"
             Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
                 .show()
         }
@@ -278,15 +277,14 @@ fun GetTrendingPeople(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun TrendingPeopleList(tvThumbs: List<People>) {
+fun TrendingPeopleList(people: List<People>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            //   .height(260.dp)
             .fillMaxHeight()
     ) {
         LazyRow {
-            items(tvThumbs) { people ->
+            items(people) { people ->
                 Card(
                     modifier = Modifier
                         .padding(9.dp)
@@ -316,7 +314,7 @@ fun TrendingPeopleList(tvThumbs: List<People>) {
                         )
                         Image(
                             painter = painter,
-                            contentDescription = "food",
+                            contentDescription = "people",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
