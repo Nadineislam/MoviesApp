@@ -6,11 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
+import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
 
 @Composable
 fun BottomNavGraph(
     viewModel: HomeViewModel,
     navController: NavHostController,
+    moviesViewModel: MoviesViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -22,7 +24,7 @@ fun BottomNavGraph(
             HomeScreen(viewModel = viewModel, navController = navController)
         }
         composable(BottomBarScreen.Movies.route) {
-
+            MoviesScreen(moviesViewModel)
         }
         composable(BottomBarScreen.Tv.route) {
 

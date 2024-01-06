@@ -1,6 +1,8 @@
 package com.example.movieapp.movie_home_feature.presentation.components
 
+import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -37,12 +40,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.movieapp.R
+import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
+import com.example.movieapp.core.utils.Constants.Companion.MOVIE_NAME
+import com.example.movieapp.core.utils.Constants.Companion.MOVIE_OVERVIEW
+import com.example.movieapp.core.utils.Constants.Companion.MOVIE_POSTER
+import com.example.movieapp.core.utils.Constants.Companion.MOVIE_VOTE
+import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
 import com.example.movieapp.core.utils.Resource
-import com.example.movieapp.movie_home_feature.data.remote.MoviesApi.Companion.IMAGE_BASE_URL
-import com.example.movieapp.movie_home_feature.data.remote.MoviesApi.Companion.PIC_POSTER_PATH
 import com.example.movieapp.movie_home_feature.data.remote.dto.Movies
 import com.example.movieapp.movie_home_feature.data.remote.dto.People
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
+import com.example.movieapp.movie_home_feature.presentation.activities.MovieDetails
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
 
 
@@ -123,6 +131,8 @@ fun GetTrendingMovies(viewModel: HomeViewModel) {
 
 @Composable
 fun TrendingMovieList(movies: List<Movies>) {
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -135,6 +145,16 @@ fun TrendingMovieList(movies: List<Movies>) {
                         .padding(9.dp)
                         .fillMaxHeight()
                         .width(140.dp)
+                        .clickable {
+                            val intent = Intent(context, MovieDetails::class.java)
+                            intent.putExtra(MOVIE_OVERVIEW, movie.overView)
+                            intent.putExtra(MOVIE_NAME, movie.name)
+                            intent.putExtra(MOVIE_POSTER, movie.posterPath)
+                            intent.putExtra(MOVIE_VOTE, movie.voteAverage)
+                            context.startActivity(intent)
+                        },
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(width = 1.dp, color = Color.LightGray)
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -201,6 +221,7 @@ fun GetTrendingTv(viewModel: HomeViewModel) {
 
 @Composable
 fun TrendingTvList(tv: List<Tv>) {
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -212,6 +233,16 @@ fun TrendingTvList(tv: List<Tv>) {
                         .padding(9.dp)
                         .fillMaxHeight()
                         .width(140.dp)
+                        .clickable {
+                            val intent = Intent(context, MovieDetails::class.java)
+                            intent.putExtra(MOVIE_OVERVIEW, tv.overView)
+                            intent.putExtra(MOVIE_NAME, tv.name)
+                            intent.putExtra(MOVIE_POSTER, tv.poster)
+                            intent.putExtra(MOVIE_VOTE, tv.voteAverage)
+                            context.startActivity(intent)
+                        },
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(width = 1.dp, color = Color.LightGray)
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -278,6 +309,7 @@ fun GetTrendingPeople(viewModel: HomeViewModel) {
 
 @Composable
 fun TrendingPeopleList(people: List<People>) {
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -290,13 +322,14 @@ fun TrendingPeopleList(people: List<People>) {
                         .padding(9.dp)
                         .fillMaxHeight()
                         .width(140.dp)
-//                        .clickable {
-//                            val intent = Intent(context, MealDetails::class.java)
-//                            intent.putExtra("MEAL_ID", meal.idMeal)
-//                            intent.putExtra("MEAL_NAME", meal.strMeal)
-//                            intent.putExtra("MEAL_THUMB", meal.strMealThumb)
-//                            context.startActivity(intent)
-//                        }
+                        .clickable {
+                            val intent = Intent(context, MovieDetails::class.java)
+                            intent.putExtra(MOVIE_NAME, people.name)
+                            intent.putExtra(MOVIE_POSTER, people.poster)
+                            context.startActivity(intent)
+                        },
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(width = 1.dp, color = Color.LightGray)
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,

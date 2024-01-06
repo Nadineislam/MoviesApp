@@ -1,7 +1,11 @@
-package com.example.movieapp.movie_home_feature.presentation.components
+package com.example.movieapp.movie_home_feature.presentation.activities
 
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,12 +23,10 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,35 +40,43 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.movieapp.core.utils.Constants
-import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
-import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
+import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
 import com.example.movieapp.core.utils.Resource
-import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
-import com.example.movieapp.movie_home_feature.presentation.activities.MovieDetails
-import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
+import com.example.movieapp.movie_home_feature.data.remote.dto.Movies
+import com.example.movieapp.movie_home_feature.presentation.activities.ui.theme.MovieAppTheme
+import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-@OptIn(ExperimentalMaterial3Api::class)
+@AndroidEntryPoint
+class MoviesCategory : ComponentActivity() {
+    private val moviesViewModel: MoviesViewModel by viewModels()
+    private var categoryId: Int? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val intent = intent
+        categoryId = intent.getIntExtra(CATEGORY_ID, 0)
+        moviesViewModel.getMovieCategories(categoryId ?: 0)
+        setContent {
+            MovieAppTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MoviesCategoryScreen(viewModel = moviesViewModel)
+                }
+            }
+        }
+    }
+}
+
 @Composable
-fun SearchScreen(viewModel: HomeViewModel) {
-    val searchQuery = remember { mutableStateOf("") }
-    val searchResult = viewModel.searchMovie.collectAsStateWithLifecycle()
+fun MoviesCategoryScreen(viewModel: MoviesViewModel) {
+    val searchResult = viewModel.movieCategories.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TextField(
-            value = searchQuery.value,
-            onValueChange = { query ->
-                searchQuery.value = query
-                viewModel.getSearchedMovie(query)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            shape = RoundedCornerShape(16.dp),
-            placeholder = { Text(text = "Search Movies..") }
-        )
         when (val resource = searchResult.value) {
             is Resource.Error -> {
                 val message = resource.message ?: "Error fetching movie"
@@ -85,7 +95,7 @@ fun SearchScreen(viewModel: HomeViewModel) {
             }
 
             is Resource.Success -> {
-                val movieList = resource.data?.trendingTv
+                val movieList = resource.data?.trendingMovies
                 movieList?.let { movies ->
                     LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
                         items(movies) { movie ->
@@ -98,9 +108,8 @@ fun SearchScreen(viewModel: HomeViewModel) {
     }
 }
 
-
 @Composable
-fun MovieItem(movie: Tv) {
+fun MovieItem(movie: Movies) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
@@ -110,7 +119,7 @@ fun MovieItem(movie: Tv) {
                 val intent = Intent(context, MovieDetails::class.java)
                 intent.putExtra(Constants.MOVIE_OVERVIEW, movie.overView)
                 intent.putExtra(Constants.MOVIE_NAME, movie.name)
-                intent.putExtra(Constants.MOVIE_POSTER, movie.poster)
+                intent.putExtra(Constants.MOVIE_POSTER, movie.posterPath)
                 intent.putExtra(Constants.MOVIE_VOTE, movie.voteAverage)
                 context.startActivity(intent)
             },
@@ -124,7 +133,7 @@ fun MovieItem(movie: Tv) {
                 .background(Color.White)
         ) {
             val painter = rememberAsyncImagePainter(
-                model = IMAGE_BASE_URL + PIC_POSTER_PATH + movie.poster
+                model = Constants.IMAGE_BASE_URL + Constants.PIC_POSTER_PATH + movie.posterPath
             )
             Image(
                 painter = painter,
@@ -148,3 +157,4 @@ fun MovieItem(movie: Tv) {
         }
     }
 }
+

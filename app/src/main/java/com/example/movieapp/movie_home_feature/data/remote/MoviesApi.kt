@@ -1,5 +1,6 @@
 package com.example.movieapp.movie_home_feature.data.remote
 
+import com.example.movieapp.core.utils.Constants.Companion.API_KEY
 import com.example.movieapp.movie_home_feature.data.remote.dto.CategoriesResponse
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesResponse
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingPeopleResponse
@@ -26,14 +27,14 @@ interface MoviesApi {
     ): Response<TrendingTvResponse>
 
     @GET("genre/movie/list")
-    suspend fun getMoviesCategories(@Query("api_key") apiKey: String): Response<CategoriesResponse>
+    suspend fun getCategoriesList(@Query("api_key") apiKey: String= API_KEY): Response<CategoriesResponse>
 
     @GET("genre/tv/list")
     suspend fun getTvCategories(@Query("api_key") apiKey: String): Response<CategoriesResponse>
 
     @GET("discover/movie")
-    suspend fun getMovieCategories(
-        @Query("api_key") apiKey: String, @Query("with_genres") categoryNumber: Int
+    suspend fun getMovieCategoriesList(
+        @Query("api_key") apiKey: String= API_KEY, @Query("with_genres") categoryId: Int
     ): Response<TrendingMoviesResponse>
 
     @GET("discover/tv")
@@ -41,11 +42,4 @@ interface MoviesApi {
         @Query("api_key") apiKey: String, @Query("with_genres") categoryNumber: Int
     ): Response<TrendingTvResponse>
 
-    companion object {
-        const val BASE_URL = "https://api.themoviedb.org/3/"
-        const val API_KEY = "15bfb3d770d73513c71ab9f787cbe27b"
-        const val IMAGE_BASE_URL = "https://image.tmdb.org/"
-        const val PIC_POSTER_PATH = "t/p/original"
-
-    }
 }

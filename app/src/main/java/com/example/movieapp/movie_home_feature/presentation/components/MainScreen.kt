@@ -19,15 +19,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
+import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: HomeViewModel) {
+fun MainScreen(viewModel: HomeViewModel, moviesViewModel: MoviesViewModel) {
     val navController = rememberNavController()
     Scaffold(bottomBar = { BottomBar(navController = navController) }) { paddingValues ->
         BottomNavGraph(
             viewModel = viewModel,
             navController = navController,
+            moviesViewModel,
             modifier = Modifier.padding(paddingValues)
         )
     }

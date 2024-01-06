@@ -1,8 +1,10 @@
 package com.example.movieapp.movie_home_feature.di
 
+import com.example.movieapp.core.utils.Constants.Companion.BASE_URL
 import com.example.movieapp.movie_home_feature.data.remote.MoviesApi
-import com.example.movieapp.movie_home_feature.data.remote.MoviesApi.Companion.BASE_URL
+import com.example.movieapp.movie_home_feature.data.repository.HomeRepositoryImpl
 import com.example.movieapp.movie_home_feature.data.repository.MoviesRepositoryImpl
+import com.example.movieapp.movie_home_feature.domain.repository.HomeRepository
 import com.example.movieapp.movie_home_feature.domain.repository.MoviesRepository
 import dagger.Module
 import dagger.Provides
@@ -20,7 +22,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesNewsRepository(api: MoviesApi): MoviesRepository {
+    fun providesHomeRepository(api: MoviesApi): HomeRepository {
+        return HomeRepositoryImpl(api)
+    }
+    @Provides
+    @Singleton
+    fun providesMoviesRepository(api: MoviesApi): MoviesRepository {
         return MoviesRepositoryImpl(api)
     }
 
