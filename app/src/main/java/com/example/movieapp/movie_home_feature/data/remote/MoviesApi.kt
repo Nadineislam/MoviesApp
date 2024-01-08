@@ -27,19 +27,19 @@ interface MoviesApi {
     ): Response<TrendingTvResponse>
 
     @GET("genre/movie/list")
-    suspend fun getMoviesCategoriesList(@Query("api_key") apiKey: String= API_KEY): Response<CategoriesResponse>
+    suspend fun getMoviesCategoriesList(@Query("api_key") apiKey: String = API_KEY): Response<CategoriesResponse>
 
     @GET("genre/tv/list")
-    suspend fun getTvCategories(@Query("api_key") apiKey: String): Response<CategoriesResponse>
+    suspend fun getTvCategoriesList(@Query("api_key") apiKey: String = API_KEY): Response<CategoriesResponse>
 
     @GET("discover/movie")
     suspend fun getMovieCategoryList(
-        @Query("api_key") apiKey: String= API_KEY, @Query("with_genres") categoryId: Int
+        @Query("api_key") apiKey: String = API_KEY, @Query("with_genres") categoryId: Int
     ): Response<TrendingMoviesResponse>
 
     @GET("discover/tv")
-    suspend fun getTvCategories(
-        @Query("api_key") apiKey: String, @Query("with_genres") categoryNumber: Int
+    suspend fun getTvCategoryList(
+        @Query("api_key") apiKey: String = API_KEY, @Query("with_genres") categoryId: Int
     ): Response<TrendingTvResponse>
 
 }

@@ -4,8 +4,10 @@ import com.example.movieapp.core.utils.Constants.Companion.BASE_URL
 import com.example.movieapp.movie_home_feature.data.remote.MoviesApi
 import com.example.movieapp.movie_home_feature.data.repository.HomeRepositoryImpl
 import com.example.movieapp.movie_home_feature.data.repository.MoviesRepositoryImpl
+import com.example.movieapp.movie_home_feature.data.repository.TvRepositoryImpl
 import com.example.movieapp.movie_home_feature.domain.repository.HomeRepository
 import com.example.movieapp.movie_home_feature.domain.repository.MoviesRepository
+import com.example.movieapp.movie_home_feature.domain.repository.TvRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,6 +31,11 @@ object AppModule {
     @Singleton
     fun providesMoviesRepository(api: MoviesApi): MoviesRepository {
         return MoviesRepositoryImpl(api)
+    }
+    @Provides
+    @Singleton
+    fun providesTvRepository(api: MoviesApi): TvRepository {
+        return TvRepositoryImpl(api)
     }
 
     @Singleton

@@ -2,4 +2,5 @@
     <string name="app_name">Movie App</string>
     <string name="title_activity_movie_details">MovieDetails</string>
     <string name="title_activity_movies_category">MoviesCategory</string>
+    <string name="title_activity_tv_category">TvCategory</string>
 </resources>

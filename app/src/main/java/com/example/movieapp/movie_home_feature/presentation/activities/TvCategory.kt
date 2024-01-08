@@ -8,33 +8,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
+import com.example.movieapp.core.utils.Constants
 import com.example.movieapp.movie_home_feature.presentation.activities.ui.theme.MovieAppTheme
-import com.example.movieapp.movie_home_feature.presentation.components.MoviesCategoryScreen
-import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.movieapp.movie_home_feature.presentation.components.TvCategoryScreen
+import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel
 
-@AndroidEntryPoint
-class MoviesCategory : ComponentActivity() {
-    private val moviesViewModel: MoviesViewModel by viewModels()
+class TvCategory : ComponentActivity() {
+    private val tvViewModel: TvViewModel by viewModels()
     private var categoryId: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
-        categoryId = intent.getIntExtra(CATEGORY_ID, 0)
-        moviesViewModel.getMovieCategories(categoryId ?: 0)
+        categoryId = intent.getIntExtra(Constants.CATEGORY_ID, 0)
+        tvViewModel.getTvCategories(categoryId ?: 0)
         setContent {
             MovieAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MoviesCategoryScreen(viewModel = moviesViewModel)
+                    TvCategoryScreen(viewModel = tvViewModel)
                 }
             }
         }
     }
 }
-
-
 

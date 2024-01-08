@@ -58,7 +58,7 @@ fun GetMoviesCategories(viewModel: MoviesViewModel) {
 
         is Resource.Success -> {
             val categories = resource.data?.categoriesList
-            MoviesCategories(categories = categories ?: emptyList())
+            Categories(categories = categories ?: emptyList())
         }
 
         is Resource.Error -> {
@@ -70,7 +70,7 @@ fun GetMoviesCategories(viewModel: MoviesViewModel) {
 }
 
 @Composable
-fun MoviesCategories(categories: List<Categories>) {
+fun Categories(categories: List<Categories>) {
     val context = LocalContext.current
     Box(
         modifier = Modifier
