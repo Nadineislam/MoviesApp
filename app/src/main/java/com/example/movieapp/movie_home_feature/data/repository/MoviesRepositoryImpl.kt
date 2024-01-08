@@ -8,10 +8,10 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(private val moviesApi: MoviesApi) : MoviesRepository {
-    override suspend fun getCategoriesList(): Response<CategoriesResponse> =
-        moviesApi.getCategoriesList()
+    override suspend fun getMoviesCategoriesList(): Response<CategoriesResponse> =
+        moviesApi.getMoviesCategoriesList()
 
-    override suspend fun getMovieCategoriesList(categoryId: Int): Response<TrendingMoviesResponse> =
-        moviesApi.getMovieCategoriesList(categoryId = categoryId)
+    override suspend fun getMovieCategoryList(categoryId: Int): Response<TrendingMoviesResponse> =
+        moviesApi.getMovieCategoryList(categoryId = categoryId)
 
 }

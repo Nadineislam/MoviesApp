@@ -32,20 +32,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
-import com.example.movieapp.core.utils.Constants.Companion.MOVIE_NAME
 import com.example.movieapp.core.utils.Resource
 import com.example.movieapp.movie_home_feature.data.remote.dto.Categories
 import com.example.movieapp.movie_home_feature.presentation.activities.MoviesCategory
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
 
 @Composable
-fun MoviesScreen(viewModel: MoviesViewModel) {
-    GetCategoriesMovie(viewModel = viewModel)
+fun MoviesCategoriesScreen(viewModel: MoviesViewModel) {
+    GetMoviesCategories(viewModel = viewModel)
 
 }
 
 @Composable
-fun GetCategoriesMovie(viewModel: MoviesViewModel) {
+fun GetMoviesCategories(viewModel: MoviesViewModel) {
     val categoriesMovie by viewModel.categories.collectAsStateWithLifecycle()
     when (val resource = categoriesMovie) {
         is Resource.Loading -> {
@@ -59,7 +58,7 @@ fun GetCategoriesMovie(viewModel: MoviesViewModel) {
 
         is Resource.Success -> {
             val categories = resource.data?.categoriesList
-            CategoriesMovie(categories = categories ?: emptyList())
+            MoviesCategories(categories = categories ?: emptyList())
         }
 
         is Resource.Error -> {
@@ -71,7 +70,7 @@ fun GetCategoriesMovie(viewModel: MoviesViewModel) {
 }
 
 @Composable
-fun CategoriesMovie(categories: List<Categories>) {
+fun MoviesCategories(categories: List<Categories>) {
     val context = LocalContext.current
     Box(
         modifier = Modifier

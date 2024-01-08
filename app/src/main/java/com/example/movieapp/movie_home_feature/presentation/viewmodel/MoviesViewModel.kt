@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.movieapp.core.utils.Resource
 import com.example.movieapp.movie_home_feature.data.remote.dto.CategoriesResponse
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesResponse
-import com.example.movieapp.movie_home_feature.domain.use_case.CategoriesUseCase
-import com.example.movieapp.movie_home_feature.domain.use_case.MovieCategoriesUseCase
+import com.example.movieapp.movie_home_feature.domain.use_case.MoviesCategoriesUseCase
+import com.example.movieapp.movie_home_feature.domain.use_case.MovieCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val categoriesUseCase: CategoriesUseCase,
-    private val movieCategoriesUseCase: MovieCategoriesUseCase
+    private val moviesCategoriesUseCase: MoviesCategoriesUseCase,
+    private val movieCategoryUseCase: MovieCategoryUseCase
 ) : ViewModel() {
     private val _categories: MutableStateFlow<Resource<CategoriesResponse>> =
         MutableStateFlow(Resource.Loading())
@@ -28,7 +28,7 @@ class MoviesViewModel @Inject constructor(
     val movieCategories: StateFlow<Resource<TrendingMoviesResponse>> = _movieCategories
 
     private fun getCategories() = viewModelScope.launch {
-        val response = categoriesUseCase()
+        val response = moviesCategoriesUseCase()
         _categories.value = handleCategoriesResponse(response)
     }
 
@@ -47,7 +47,7 @@ class MoviesViewModel @Inject constructor(
     }
 
     fun getMovieCategories(categoryId: Int) = viewModelScope.launch {
-        val response = movieCategoriesUseCase(categoryId)
+        val response = movieCategoryUseCase(categoryId)
         _movieCategories.value = handleMovieCategoriesResponse(response)
     }
 

@@ -5,7 +5,7 @@ import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesRes
 import retrofit2.Response
 
 interface MoviesRepository {
-    suspend fun getCategoriesList(): Response<CategoriesResponse>
-    suspend fun getMovieCategoriesList(categoryId: Int): Response<TrendingMoviesResponse>
+    suspend fun getMoviesCategoriesList(): Response<CategoriesResponse>
+    suspend fun getMovieCategoryList(categoryId: Int): Response<TrendingMoviesResponse>
 
 }

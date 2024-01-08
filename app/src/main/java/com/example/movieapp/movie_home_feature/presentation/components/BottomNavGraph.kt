@@ -24,7 +24,7 @@ fun BottomNavGraph(
             HomeScreen(viewModel = viewModel, navController = navController)
         }
         composable(BottomBarScreen.Movies.route) {
-            MoviesScreen(moviesViewModel)
+            MoviesCategoriesScreen(moviesViewModel)
         }
         composable(BottomBarScreen.Tv.route) {
 

@@ -7,9 +7,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CategoriesUseCase @Inject constructor(private val repository: MoviesRepository) {
+class MoviesCategoriesUseCase @Inject constructor(private val repository: MoviesRepository) {
     suspend operator fun invoke(): Response<CategoriesResponse> =
-        repository.getCategoriesList()
+        repository.getMoviesCategoriesList()
 
 
 }
