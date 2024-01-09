@@ -27,7 +27,7 @@ class TvViewModel @Inject constructor(
         MutableStateFlow(Resource.Loading())
     val tvCategory: StateFlow<Resource<TrendingTvResponse>> = _tvCategories
 
-    private fun getCategories() = viewModelScope.launch {
+    fun getCategories() = viewModelScope.launch {
         val response = tvCategoriesUseCase()
         _categories.value = handleCategoriesResponse(response)
     }
@@ -58,4 +58,5 @@ class TvViewModel @Inject constructor(
             }
         }
         return Resource.Error("An error occurred")
-    }}
+    }
+}

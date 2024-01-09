@@ -98,4 +98,17 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.2"
 
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    //Mockito
+    testImplementation 'org.mockito:mockito-core:3.11.2'
+
+    androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
+
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2' // For coroutines testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.0'
+
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
+    testImplementation "org.mockito:mockito-inline:3.11.2"
 }
