@@ -7,7 +7,8 @@ import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingTvRespons
 import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoriesUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoryUseCase
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel
-import junit.framework.TestCase
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -42,7 +43,7 @@ class TvViewModelTest {
 
             viewModel.getTvCategories(id)
 
-            TestCase.assertTrue(
+            assertTrue(
                 (viewModel.tvCategory.value as Resource.Success)
                     .data == mockedResponse.body()
             )
@@ -59,7 +60,7 @@ class TvViewModelTest {
 
             viewModel.getTvCategories(id)
 
-            TestCase.assertEquals(
+            assertEquals(
                 errorMessage,
                 (viewModel.tvCategory.value as Resource.Error).message
             )
@@ -74,7 +75,7 @@ class TvViewModelTest {
 
             viewModel.getCategories()
 
-            TestCase.assertTrue(
+            assertTrue(
                 (viewModel.categories.value as Resource.Success)
                     .data == mockedResponse.body()
             )
@@ -90,7 +91,7 @@ class TvViewModelTest {
 
             viewModel.getCategories()
 
-            TestCase.assertEquals(
+            assertEquals(
                 errorMessage,
                 (viewModel.categories.value as Resource.Error).message
             )

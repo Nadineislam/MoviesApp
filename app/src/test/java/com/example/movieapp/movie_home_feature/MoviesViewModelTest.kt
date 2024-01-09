@@ -7,7 +7,8 @@ import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesRes
 import com.example.movieapp.movie_home_feature.domain.use_case.MovieCategoryUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.MoviesCategoriesUseCase
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
-import junit.framework.TestCase
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -37,12 +38,12 @@ class MoviesViewModelTest {
     @Test
     fun `when getCategories is called with success state then the list of meals should be retrieved`() =
         runBlocking {
-            val mockedResponse = Response.success(CategoriesResponse( listOf()))
+            val mockedResponse = Response.success(CategoriesResponse(listOf()))
             Mockito.`when`(moviesCategoriesUseCase()).thenReturn(mockedResponse)
 
             viewModel.getCategories()
 
-            TestCase.assertTrue(
+            assertTrue(
                 (viewModel.categories.value as Resource.Success)
                     .data == mockedResponse.body()
             )
@@ -58,22 +59,23 @@ class MoviesViewModelTest {
 
             viewModel.getCategories()
 
-            TestCase.assertEquals(
+            assertEquals(
                 errorMessage,
                 (viewModel.categories.value as Resource.Error).message
             )
 
         }
+
     @Test
     fun `when getMovieCategories is called with success state then the list of meals should be retrieved`() =
         runBlocking {
-            val id=1
+            val id = 1
             val mockedResponse = Response.success(TrendingMoviesResponse(0, listOf()))
             Mockito.`when`(movieCategoryUseCase(id)).thenReturn(mockedResponse)
 
             viewModel.getMovieCategories(id)
 
-            TestCase.assertTrue(
+            assertTrue(
                 (viewModel.movieCategories.value as Resource.Success)
                     .data == mockedResponse.body()
             )
@@ -82,7 +84,7 @@ class MoviesViewModelTest {
     @Test
     fun `when getMovieCategories is called with failure state then error should be retrieved`() =
         runBlocking {
-            val id=1
+            val id = 1
             val errorMessage = "An error occurred"
             val mockedResponse =
                 Response.error<TrendingMoviesResponse>(400, errorMessage.toResponseBody(null))
@@ -90,7 +92,7 @@ class MoviesViewModelTest {
 
             viewModel.getMovieCategories(id)
 
-            TestCase.assertEquals(
+            assertEquals(
                 errorMessage,
                 (viewModel.movieCategories.value as Resource.Error).message
             )
