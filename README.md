@@ -1,3 +1,6 @@
+# Movies App
+Immerse into a world of cinematic exploration with a vast library of movies and TV shows, complemented by intuitive categorization and personalized recommendations for a tailored viewing experience.
+
 # Preview
 
 https://github.com/Nadineislam/MoviesApp/assets/96357226/1b6f26a6-bfae-48e6-b779-5d76896b8ee9
