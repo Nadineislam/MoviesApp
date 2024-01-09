@@ -3,7 +3,6 @@ package com.example.movieapp.movie_home_feature.presentation.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
 import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
 import com.example.movieapp.core.utils.Constants.Companion.MOVIE_NAME
 import com.example.movieapp.core.utils.Constants.Companion.MOVIE_OVERVIEW
@@ -52,7 +51,7 @@ class MovieDetails : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MovieDetails(movieName, moviePoster, movieOverview,movieVote)
+                    MovieDetails(movieName, moviePoster, movieOverview, movieVote)
                 }
             }
         }
@@ -64,15 +63,13 @@ fun MovieDetails(
     movieName: String,
     moviePoster: String,
     movieOverview: String,
-    movieVote:String,
+    movieVote: String,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        val painter =
-            rememberImagePainter(data = IMAGE_BASE_URL + PIC_POSTER_PATH + moviePoster)
-        Image(
-            painter = painter,
-            contentDescription = "",
+        AsyncImage(
+            model = IMAGE_BASE_URL + PIC_POSTER_PATH + moviePoster,
+            contentDescription = "movie",
             modifier = Modifier
                 .padding(top = 30.dp, bottom = 20.dp)
                 .height(400.dp)
@@ -89,13 +86,18 @@ fun MovieDetails(
                     tint = Color.Yellow,
                     modifier = Modifier.size(25.dp)
                 )
-                Text(text = movieVote,
+                Text(
+                    text = movieVote,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 4.dp))
-            }        }
-        Text(text = movieOverview, modifier = Modifier
-            .padding(vertical = 12.dp)
-            .padding(15.dp))
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+        }
+        Text(
+            text = movieOverview, modifier = Modifier
+                .padding(vertical = 12.dp)
+                .padding(15.dp)
+        )
 
 
     }

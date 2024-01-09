@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
 import com.example.movieapp.R
 import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
 import com.example.movieapp.core.utils.Constants.Companion.MOVIE_NAME
@@ -163,18 +163,9 @@ fun TrendingMovieList(movies: List<Movies>) {
                             Color.White
                         )
                     ) {
-                        val painter = rememberImagePainter(
-                            data = IMAGE_BASE_URL + PIC_POSTER_PATH + movie.posterPath,
-                            builder = {
-                                placeholder(R.drawable.ic_search)
-                                error(R.drawable.ic_search)
-                            }
-                        )
-                        Image(
-                            painter = painter,
-                            contentDescription = "movie",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
+                        AsyncImage(
+                            model = IMAGE_BASE_URL + PIC_POSTER_PATH + movie.posterPath,
+                            contentDescription = "movie"
                         )
                         Text(
                             text = movie.name.uppercase(),
@@ -251,18 +242,9 @@ fun TrendingTvList(tv: List<Tv>) {
                             Color.White
                         )
                     ) {
-                        val painter = rememberImagePainter(
-                            data = IMAGE_BASE_URL + PIC_POSTER_PATH + tv.poster,
-                            builder = {
-                                placeholder(R.drawable.ic_search)
-                                error(R.drawable.ic_search)
-                            }
-                        )
-                        Image(
-                            painter = painter,
-                            contentDescription = "tv",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
+                        AsyncImage(
+                            model = IMAGE_BASE_URL + PIC_POSTER_PATH + tv.poster,
+                            contentDescription = "tv"
                         )
                         Text(
                             text = tv.name.uppercase(),
@@ -338,15 +320,8 @@ fun TrendingPeopleList(people: List<People>) {
                             Color.White
                         )
                     ) {
-                        val painter = rememberImagePainter(
-                            data = IMAGE_BASE_URL + PIC_POSTER_PATH + people.poster,
-                            builder = {
-                                placeholder(R.drawable.ic_search)
-                                error(R.drawable.ic_search)
-                            }
-                        )
-                        Image(
-                            painter = painter,
+                        AsyncImage(
+                            model = IMAGE_BASE_URL + PIC_POSTER_PATH + people.poster,
                             contentDescription = "people",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
