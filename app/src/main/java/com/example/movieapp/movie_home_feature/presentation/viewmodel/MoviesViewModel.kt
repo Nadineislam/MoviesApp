@@ -27,7 +27,7 @@ class MoviesViewModel @Inject constructor(
         MutableStateFlow(Resource.Loading())
     val movieCategories: StateFlow<Resource<TrendingMoviesResponse>> = _movieCategories
 
-    private fun getCategories() = viewModelScope.launch {
+    fun getCategories() = viewModelScope.launch {
         val response = moviesCategoriesUseCase()
         _categories.value = handleCategoriesResponse(response)
     }
