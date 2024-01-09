@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun getTrendingMovies() = viewModelScope.launch {
+    fun getTrendingMovies() = viewModelScope.launch {
         val response = trendingMoviesUseCase()
         _movies.value = handleMoviesResponse(response)
     }
@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
         return Resource.Error("An error occurred")
     }
 
-    private fun getTrendingTv() = viewModelScope.launch {
+    fun getTrendingTv() = viewModelScope.launch {
         val response = trendingTvUseCase()
         _tv.value = handleTrendingTvResponse(response)
     }
@@ -73,7 +73,7 @@ class HomeViewModel @Inject constructor(
         return Resource.Error("An error occurred")
     }
 
-    private fun getTrendingPeople() = viewModelScope.launch {
+    fun getTrendingPeople() = viewModelScope.launch {
         val response = trendingPeopleUseCase()
         _people.value = handleTrendingPeopleResponse(response)
     }
