@@ -1,12 +1,10 @@
 package com.example.movieapp.movie_home_feature.presentation.components
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,14 +16,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -40,7 +36,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.movieapp.core.utils.Constants
 import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
 import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
-import com.example.movieapp.core.utils.Resource
+import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
 import com.example.movieapp.movie_home_feature.presentation.activities.MovieDetails
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
@@ -49,11 +45,10 @@ import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewMo
 @Composable
 fun SearchScreen(viewModel: HomeViewModel) {
     val searchQuery = remember { mutableStateOf("") }
-    val searchResult = viewModel.searchMovie.collectAsStateWithLifecycle()
+    val searchMovieState = viewModel.searchMovie.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         TextField(
             value = searchQuery.value,
@@ -67,30 +62,15 @@ fun SearchScreen(viewModel: HomeViewModel) {
             shape = RoundedCornerShape(16.dp),
             placeholder = { Text(text = "Search Movies..") }
         )
-        when (val resource = searchResult.value) {
-            is Resource.Error -> {
-                val message = resource.message ?: "Error fetching movie"
-                Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            is Resource.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-
-            }
-
-            is Resource.Success -> {
-                val movieList = resource.data?.trendingTv
-                movieList?.let { movies ->
-                    LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
-                        items(movies) { movie ->
-                            MovieItem(movie = movie)
-                        }
+        GetResourceList(
+            resourceState = searchMovieState.value,
+            emptyListMessage = "Error fetching movies"
+        ) { resource ->
+            val movieList = resource?.trendingTv
+            movieList?.let { movies ->
+                LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
+                    items(movies) { movie ->
+                        MovieItem(movie = movie)
                     }
                 }
             }

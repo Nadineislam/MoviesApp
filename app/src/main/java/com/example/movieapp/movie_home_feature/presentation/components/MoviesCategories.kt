@@ -1,7 +1,6 @@
 package com.example.movieapp.movie_home_feature.presentation.components
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
-import com.example.movieapp.core.utils.Resource
+import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.data.remote.dto.Categories
 import com.example.movieapp.movie_home_feature.presentation.activities.MoviesCategory
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
@@ -45,27 +43,12 @@ fun MoviesCategoriesScreen(viewModel: MoviesViewModel) {
 
 @Composable
 fun GetMoviesCategories(viewModel: MoviesViewModel) {
-    val categoriesMovie by viewModel.categories.collectAsStateWithLifecycle()
-    when (val resource = categoriesMovie) {
-        is Resource.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is Resource.Success -> {
-            val categories = resource.data?.categoriesList
-            Categories(categories = categories ?: emptyList())
-        }
-
-        is Resource.Error -> {
-            val message = resource.message ?: "Error fetching meal"
-            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
-                .show()
-        }
+    val categoriesMovieState by viewModel.categories.collectAsStateWithLifecycle()
+    GetResourceList(
+        resourceState = categoriesMovieState,
+        emptyListMessage = "Error fetching movies"
+    ) { categories ->
+        Categories(categories = categories?.categoriesList ?: emptyList())
     }
 }
 

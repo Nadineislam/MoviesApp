@@ -1,27 +1,22 @@
 package com.example.movieapp.movie_home_feature.presentation.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
-import com.example.movieapp.core.utils.Resource
+import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.presentation.activities.ui.theme.MovieAppTheme
 import com.example.movieapp.movie_home_feature.presentation.components.TvItem
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
@@ -48,44 +43,28 @@ class MoviesCategory : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun MoviesCategoryScreen(viewModel: MoviesViewModel) {
-    val searchResult = viewModel.movieCategories.collectAsStateWithLifecycle()
+    val movieCategoriesState = viewModel.movieCategories.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
-        when (val resource = searchResult.value) {
-            is Resource.Error -> {
-                val message = resource.message ?: "Error fetching movie"
-                Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            is Resource.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-
-            }
-
-            is Resource.Success -> {
-                val movieList = resource.data?.trendingMovies
-                movieList?.let { movies ->
-                    LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
-                        items(movies) { movie ->
-                            TvItem(movie = movie)
-                        }
+        GetResourceList(
+            resourceState = movieCategoriesState.value,
+            emptyListMessage = "Error fetching movies"
+        ) { resource ->
+            val movieList = resource?.trendingMovies
+            movieList?.let { movies ->
+                LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
+                    items(movies) { movie ->
+                        TvItem(movie = movie)
                     }
                 }
             }
         }
     }
 }
-
 
 

@@ -1,7 +1,6 @@
 package com.example.movieapp.movie_home_feature.presentation.components
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,7 +21,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,7 +44,7 @@ import com.example.movieapp.core.utils.Constants.Companion.MOVIE_OVERVIEW
 import com.example.movieapp.core.utils.Constants.Companion.MOVIE_POSTER
 import com.example.movieapp.core.utils.Constants.Companion.MOVIE_VOTE
 import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
-import com.example.movieapp.core.utils.Resource
+import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.data.remote.dto.Movies
 import com.example.movieapp.movie_home_feature.data.remote.dto.People
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
@@ -56,7 +54,6 @@ import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewMo
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
-
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             HomeLayout(navController)
@@ -106,26 +103,11 @@ fun TitleText(text: String) {
 @Composable
 fun GetTrendingMovies(viewModel: HomeViewModel) {
     val trendingMoviesState by viewModel.movies.collectAsStateWithLifecycle()
-    when (val resource = trendingMoviesState) {
-        is Resource.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is Resource.Success -> {
-            val movies = resource.data?.trendingMovies
-            TrendingMovieList(movies = movies ?: emptyList())
-        }
-
-        is Resource.Error -> {
-            val message = resource.message ?: "Error fetching movies"
-            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
-                .show()
-        }
+    GetResourceList(
+        resourceState = trendingMoviesState,
+        emptyListMessage = "Error fetching movies"
+    ) { movies ->
+        TrendingMovieList(movies = movies?.trendingMovies ?: emptyList())
     }
 }
 
@@ -187,26 +169,11 @@ fun TrendingMovieList(movies: List<Movies>) {
 @Composable
 fun GetTrendingTv(viewModel: HomeViewModel) {
     val trendingTvState by viewModel.tv.collectAsStateWithLifecycle()
-    when (val resource = trendingTvState) {
-        is Resource.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is Resource.Success -> {
-            val people = resource.data?.trendingTv
-            TrendingTvList(tv = people ?: emptyList())
-        }
-
-        is Resource.Error -> {
-            val message = resource.message ?: "Error fetching movies"
-            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
-                .show()
-        }
+    GetResourceList(
+        resourceState = trendingTvState,
+        emptyListMessage = "Error fetching TV shows"
+    ) { tvShows ->
+        TrendingTvList(tv = tvShows?.trendingTv ?: emptyList())
     }
 }
 
@@ -266,26 +233,11 @@ fun TrendingTvList(tv: List<Tv>) {
 @Composable
 fun GetTrendingPeople(viewModel: HomeViewModel) {
     val trendingPeopleState by viewModel.people.collectAsStateWithLifecycle()
-    when (val resource = trendingPeopleState) {
-        is Resource.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is Resource.Success -> {
-            val people = resource.data?.trendingPeople
-            TrendingPeopleList(people = people ?: emptyList())
-        }
-
-        is Resource.Error -> {
-            val message = resource.message ?: "Error fetching people"
-            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
-                .show()
-        }
+    GetResourceList(
+        resourceState = trendingPeopleState,
+        emptyListMessage = "Error fetching people"
+    ) { people ->
+        TrendingPeopleList(people = people?.trendingPeople ?: emptyList())
     }
 }
 
