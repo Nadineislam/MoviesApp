@@ -18,7 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
 import com.example.movieapp.movie_home_feature.presentation.components.GetResourceList
 import com.example.movieapp.movie_home_feature.presentation.activities.ui.theme.MovieAppTheme
-import com.example.movieapp.movie_home_feature.presentation.components.TvItem
+import com.example.movieapp.movie_home_feature.presentation.components.MovieItem
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,7 +59,7 @@ fun MoviesCategoryScreen(viewModel: MoviesViewModel) {
             movieList?.let { movies ->
                 LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
                     items(movies) { movie ->
-                        TvItem(movie = movie)
+                        MovieItem(movie = movie)
                     }
                 }
             }

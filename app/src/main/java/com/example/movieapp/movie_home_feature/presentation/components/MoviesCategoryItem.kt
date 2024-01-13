@@ -29,7 +29,7 @@ import com.example.movieapp.movie_home_feature.data.remote.dto.Movies
 import com.example.movieapp.movie_home_feature.presentation.activities.MovieDetails
 
 @Composable
-fun TvItem(movie: Movies) {
+fun MovieItem(movie: Movies) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
