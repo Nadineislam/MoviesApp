@@ -3,7 +3,6 @@ package com.example.movieapp.movie_home_feature.presentation.components
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel
 
 @Composable

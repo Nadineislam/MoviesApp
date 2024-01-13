@@ -44,7 +44,6 @@ import com.example.movieapp.core.utils.Constants.Companion.MOVIE_OVERVIEW
 import com.example.movieapp.core.utils.Constants.Companion.MOVIE_POSTER
 import com.example.movieapp.core.utils.Constants.Companion.MOVIE_VOTE
 import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
-import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.data.remote.dto.Movies
 import com.example.movieapp.movie_home_feature.data.remote.dto.People
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv

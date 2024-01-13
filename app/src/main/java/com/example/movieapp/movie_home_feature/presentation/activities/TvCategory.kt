@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants
-import com.example.movieapp.core.utils.GetResourceList
+import com.example.movieapp.movie_home_feature.presentation.components.GetResourceList
 import com.example.movieapp.movie_home_feature.presentation.activities.ui.theme.MovieAppTheme
 import com.example.movieapp.movie_home_feature.presentation.components.TvItem
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel

@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
-import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.data.remote.dto.Categories
 import com.example.movieapp.movie_home_feature.presentation.activities.MoviesCategory
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel

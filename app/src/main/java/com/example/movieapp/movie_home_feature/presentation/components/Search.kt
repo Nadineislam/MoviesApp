@@ -36,7 +36,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.movieapp.core.utils.Constants
 import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
 import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
-import com.example.movieapp.core.utils.GetResourceList
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
 import com.example.movieapp.movie_home_feature.presentation.activities.MovieDetails
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel

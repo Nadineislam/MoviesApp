@@ -1,4 +1,4 @@
-package com.example.movieapp.core.utils
+package com.example.movieapp.movie_home_feature.presentation.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.example.movieapp.core.utils.Resource
 
 @Composable
 fun <T> GetResourceList(
