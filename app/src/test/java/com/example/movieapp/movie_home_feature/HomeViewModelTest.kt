@@ -10,8 +10,8 @@ import com.example.movieapp.movie_home_feature.domain.use_case.TrendingMoviesUse
 import com.example.movieapp.movie_home_feature.domain.use_case.TrendingPeopleUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.TrendingTvUseCase
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
-import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -49,12 +49,12 @@ class HomeViewModelTest {
     @Test
     fun `when getTrendingMovies is called with success state then the list of meals should be retrieved`() =
         runBlocking {
-            val mockedResponse = Response.success(TrendingMoviesResponse( 1,listOf()))
+            val mockedResponse = Response.success(TrendingMoviesResponse(1, listOf()))
             Mockito.`when`(trendingMoviesUseCase()).thenReturn(mockedResponse)
 
             viewModel.getTrendingMovies()
 
-            TestCase.assertTrue(
+            assertTrue(
                 (viewModel.movies.value as Resource.Success)
                     .data == mockedResponse.body()
             )
@@ -76,15 +76,16 @@ class HomeViewModelTest {
             )
 
         }
+
     @Test
     fun `when getTrendingTv is called with success state then the list of meals should be retrieved`() =
         runBlocking {
-            val mockedResponse = Response.success(TrendingTvResponse( 1,listOf()))
+            val mockedResponse = Response.success(TrendingTvResponse(1, listOf()))
             Mockito.`when`(trendingTvUseCase()).thenReturn(mockedResponse)
 
             viewModel.getTrendingTv()
 
-            TestCase.assertTrue(
+            assertTrue(
                 (viewModel.tv.value as Resource.Success)
                     .data == mockedResponse.body()
             )
@@ -106,15 +107,16 @@ class HomeViewModelTest {
             )
 
         }
+
     @Test
     fun `when getTrendingPeople is called with success state then the list of meals should be retrieved`() =
         runBlocking {
-            val mockedResponse = Response.success(TrendingPeopleResponse( 1,listOf()))
+            val mockedResponse = Response.success(TrendingPeopleResponse(1, listOf()))
             Mockito.`when`(trendingPeopleUseCase()).thenReturn(mockedResponse)
 
             viewModel.getTrendingPeople()
 
-            TestCase.assertTrue(
+            assertTrue(
                 (viewModel.people.value as Resource.Success)
                     .data == mockedResponse.body()
             )
@@ -136,6 +138,7 @@ class HomeViewModelTest {
             )
 
         }
+
     @Test
     fun `when getSearchedMovie is called with success state then the list of meals should be retrieved`() =
         runBlocking {
@@ -155,7 +158,8 @@ class HomeViewModelTest {
     fun `when getSearchedMovie is called with failure state then error should be retrieved`() =
         runBlocking {
             val errorMessage = "An error occurred"
-            val response = Response.error<TrendingTvResponse>(400, errorMessage.toResponseBody(null))
+            val response =
+                Response.error<TrendingTvResponse>(400, errorMessage.toResponseBody(null))
             Mockito.`when`(searchMovieUseCase("query")).thenReturn(response)
 
             val searchQuery = "query"
@@ -166,4 +170,5 @@ class HomeViewModelTest {
                 (viewModel.searchMovie.value as Resource.Error).message
             )
         }
+
 }
