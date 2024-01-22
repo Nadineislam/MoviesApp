@@ -71,7 +71,7 @@ class MoviesViewModelTest {
         runBlocking {
             val id = 1
             val mockedResponse = Response.success(TrendingMoviesResponse(0, listOf()))
-            Mockito.`when`(movieCategoryUseCase(id)).thenReturn(mockedResponse)
+            Mockito.`when`(movieCategoryUseCase(1,id)).thenReturn(mockedResponse)
 
             viewModel.getMovieCategories(id)
 
@@ -88,7 +88,7 @@ class MoviesViewModelTest {
             val errorMessage = "An error occurred"
             val mockedResponse =
                 Response.error<TrendingMoviesResponse>(400, errorMessage.toResponseBody(null))
-            Mockito.`when`(movieCategoryUseCase(id)).thenReturn(mockedResponse)
+            Mockito.`when`(movieCategoryUseCase(1,id)).thenReturn(mockedResponse)
 
             viewModel.getMovieCategories(id)
 

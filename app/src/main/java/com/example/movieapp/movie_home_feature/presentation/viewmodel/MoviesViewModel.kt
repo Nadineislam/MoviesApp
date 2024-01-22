@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +28,10 @@ class MoviesViewModel @Inject constructor(
         MutableStateFlow(Resource.Loading())
     val movieCategories = _movieCategories.asStateFlow()
 
+    private var currentPage = 1
+    private var isLoading = false
+    var currentCategory: Int? = null
+
     init {
         getCategories()
     }
@@ -37,8 +42,28 @@ class MoviesViewModel @Inject constructor(
     }
 
     fun getMovieCategories(categoryId: Int) = viewModelScope.launch {
-        val response = movieCategoryUseCase(categoryId)
-        _movieCategories.value = handleResponse(response)
+        if (isLoading) return@launch
+
+        isLoading = true
+
+        val response = movieCategoryUseCase(currentPage, categoryId)
+        _movieCategories.value = handlePaginatedResponse(response)
+        currentPage += 1
+        isLoading = false
+
+        currentCategory = categoryId
+    }
+
+    private fun handlePaginatedResponse(response: Response<TrendingMoviesResponse>): Resource<TrendingMoviesResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                val currentMovie =
+                    _movieCategories.value.data?.trendingMovies.orEmpty().toMutableList()
+                currentMovie.addAll(resultResponse.trendingMovies)
+                return Resource.Success(TrendingMoviesResponse(resultResponse.page, currentMovie))
+            }
+        }
+        return Resource.Error("An error occurred")
     }
 
 }

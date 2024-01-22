@@ -33,7 +33,7 @@ interface MoviesApi {
     suspend fun getTvCategoriesList(@Query("api_key") apiKey: String = API_KEY): Response<CategoriesResponse>
 
     @GET("discover/movie")
-    suspend fun getMovieCategoryList(
+    suspend fun getMovieCategoryList(@Query("page") page: Int,
         @Query("api_key") apiKey: String = API_KEY, @Query("with_genres") categoryId: Int
     ): Response<TrendingMoviesResponse>
 

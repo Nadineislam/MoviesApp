@@ -6,6 +6,6 @@ import retrofit2.Response
 
 interface MoviesRepository {
     suspend fun getMoviesCategoriesList(): Response<CategoriesResponse>
-    suspend fun getMovieCategoryList(categoryId: Int): Response<TrendingMoviesResponse>
+    suspend fun getMovieCategoryList(page:Int,categoryId: Int): Response<TrendingMoviesResponse>
 
 }

@@ -11,7 +11,7 @@ class MoviesRepositoryImpl @Inject constructor(private val moviesApi: MoviesApi)
     override suspend fun getMoviesCategoriesList(): Response<CategoriesResponse> =
         moviesApi.getMoviesCategoriesList()
 
-    override suspend fun getMovieCategoryList(categoryId: Int): Response<TrendingMoviesResponse> =
-        moviesApi.getMovieCategoryList(categoryId = categoryId)
+    override suspend fun getMovieCategoryList(page:Int,categoryId: Int): Response<TrendingMoviesResponse> =
+        moviesApi.getMovieCategoryList(page= page,categoryId = categoryId)
 
 }
