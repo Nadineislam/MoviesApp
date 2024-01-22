@@ -10,7 +10,7 @@ import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoriesUseCa
 import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,11 +21,11 @@ class TvViewModel @Inject constructor(
 ) : ViewModel() {
     private val _categories: MutableStateFlow<Resource<CategoriesResponse>> =
         MutableStateFlow(Resource.Loading())
-    val categories: StateFlow<Resource<CategoriesResponse>> = _categories
+    val categories = _categories.asStateFlow()
 
     private val _tvCategories: MutableStateFlow<Resource<TrendingTvResponse>> =
         MutableStateFlow(Resource.Loading())
-    val tvCategory: StateFlow<Resource<TrendingTvResponse>> = _tvCategories
+    val tvCategory = _tvCategories.asStateFlow()
 
     fun getCategories() = viewModelScope.launch {
         val response = tvCategoriesUseCase()

@@ -10,7 +10,7 @@ import com.example.movieapp.movie_home_feature.domain.use_case.MoviesCategoriesU
 import com.example.movieapp.movie_home_feature.domain.use_case.MovieCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,11 +21,11 @@ class MoviesViewModel @Inject constructor(
 ) : ViewModel() {
     private val _categories: MutableStateFlow<Resource<CategoriesResponse>> =
         MutableStateFlow(Resource.Loading())
-    val categories: StateFlow<Resource<CategoriesResponse>> = _categories
+    val categories = _categories.asStateFlow()
 
     private val _movieCategories: MutableStateFlow<Resource<TrendingMoviesResponse>> =
         MutableStateFlow(Resource.Loading())
-    val movieCategories: StateFlow<Resource<TrendingMoviesResponse>> = _movieCategories
+    val movieCategories = _movieCategories.asStateFlow()
 
     init {
         getCategories()

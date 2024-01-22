@@ -13,7 +13,7 @@ import com.example.movieapp.movie_home_feature.domain.use_case.TrendingPeopleUse
 import com.example.movieapp.movie_home_feature.domain.use_case.TrendingTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,16 +26,16 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val _movies: MutableStateFlow<Resource<TrendingMoviesResponse>> =
         MutableStateFlow(Resource.Loading())
-    val movies: StateFlow<Resource<TrendingMoviesResponse>> = _movies
+    val movies = _movies.asStateFlow()
     private val _tv: MutableStateFlow<Resource<TrendingTvResponse>> =
         MutableStateFlow(Resource.Loading())
-    val tv: StateFlow<Resource<TrendingTvResponse>> = _tv
+    val tv = _tv.asStateFlow()
     private val _people: MutableStateFlow<Resource<TrendingPeopleResponse>> =
         MutableStateFlow(Resource.Loading())
-    val people: StateFlow<Resource<TrendingPeopleResponse>> = _people
+    val people = _people.asStateFlow()
 
     private val _searchMovie = MutableStateFlow<Resource<TrendingTvResponse>>(Resource.Loading())
-    val searchMovie: StateFlow<Resource<TrendingTvResponse>> = _searchMovie
+    val searchMovie = _searchMovie.asStateFlow()
 
     init {
         getTrendingMovies()
