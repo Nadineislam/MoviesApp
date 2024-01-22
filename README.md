@@ -17,5 +17,5 @@ https://github.com/Nadineislam/MoviesApp/assets/96357226/1b6f26a6-bfae-48e6-b779
 
 * Unit Testing : For validating individual components of code, ensuring functionality, detecting bugs early, and maintaining code quality. <br />
 
-* Paging: Efficiently loading and displaying large datasets by fetching and presenting data in smaller, manageable chunks.
+*  Paging : Efficiently loading and displaying large datasets by fetching and presenting data in smaller, manageable chunks.
 
