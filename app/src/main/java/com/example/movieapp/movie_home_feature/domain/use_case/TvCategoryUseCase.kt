@@ -8,6 +8,6 @@ import javax.inject.Singleton
 
 @Singleton
 class TvCategoryUseCase @Inject constructor(private val repository: TvRepository) {
-    suspend operator fun invoke(categoryId:Int): Response<TrendingTvResponse> =
-        repository.getTvCategoryList(categoryId = categoryId)
+    suspend operator fun invoke(page:Int,categoryId:Int): Response<TrendingTvResponse> =
+        repository.getTvCategoryList(page=page,categoryId = categoryId)
 }

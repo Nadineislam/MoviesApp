@@ -9,6 +9,7 @@ import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingTvRespons
 import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoriesUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -27,6 +28,10 @@ class TvViewModel @Inject constructor(
         MutableStateFlow(Resource.Loading())
     val tvCategory = _tvCategories.asStateFlow()
 
+    private var currentPage = 1
+    private var isLoading = false
+    var currentCategory: Int? = null
+
     fun getCategories() = viewModelScope.launch {
         val response = tvCategoriesUseCase()
         _categories.value = handleResponse(response)
@@ -37,7 +42,16 @@ class TvViewModel @Inject constructor(
     }
 
     fun getTvCategories(categoryId: Int) = viewModelScope.launch {
-        val response = tvCategoryUseCase(categoryId)
+
+        if (isLoading) return@launch
+
+        isLoading = true
+        val response = tvCategoryUseCase(currentPage, categoryId)
         _tvCategories.value = handleResponse(response)
+        delay(5000)
+        currentPage += 1
+        isLoading = false
+
+        currentCategory = categoryId
     }
 }

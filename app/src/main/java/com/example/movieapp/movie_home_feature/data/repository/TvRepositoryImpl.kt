@@ -11,6 +11,6 @@ class TvRepositoryImpl @Inject constructor(private val moviesApi: MoviesApi) : T
     override suspend fun getTvCategoriesList(): Response<CategoriesResponse> =
         moviesApi.getTvCategoriesList()
 
-    override suspend fun getTvCategoryList(categoryId: Int): Response<TrendingTvResponse> =
-        moviesApi.getTvCategoryList(categoryId = categoryId)
+    override suspend fun getTvCategoryList(page:Int,categoryId: Int): Response<TrendingTvResponse> =
+        moviesApi.getTvCategoryList(page=page,categoryId = categoryId)
 }

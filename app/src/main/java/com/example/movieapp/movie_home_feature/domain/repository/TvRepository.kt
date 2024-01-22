@@ -6,5 +6,5 @@ import retrofit2.Response
 
 interface TvRepository {
     suspend fun getTvCategoriesList(): Response<CategoriesResponse>
-    suspend fun getTvCategoryList(categoryId: Int): Response<TrendingTvResponse>
+    suspend fun getTvCategoryList(page:Int,categoryId: Int): Response<TrendingTvResponse>
 }

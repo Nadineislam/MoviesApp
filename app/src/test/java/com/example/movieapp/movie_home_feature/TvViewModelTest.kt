@@ -39,7 +39,7 @@ class TvViewModelTest {
         runBlocking {
             val id = 1
             val mockedResponse = Response.success(TrendingTvResponse(0, listOf()))
-            Mockito.`when`(tvCategoryUseCase(id)).thenReturn(mockedResponse)
+            Mockito.`when`(tvCategoryUseCase(1,id)).thenReturn(mockedResponse)
 
             viewModel.getTvCategories(id)
 
@@ -56,7 +56,7 @@ class TvViewModelTest {
             val errorMessage = "An error occurred"
             val mockedResponse =
                 Response.error<TrendingTvResponse>(400, errorMessage.toResponseBody(null))
-            Mockito.`when`(tvCategoryUseCase(id)).thenReturn(mockedResponse)
+            Mockito.`when`(tvCategoryUseCase(1,id)).thenReturn(mockedResponse)
 
             viewModel.getTvCategories(id)
 
