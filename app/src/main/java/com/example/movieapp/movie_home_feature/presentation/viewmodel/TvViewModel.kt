@@ -34,7 +34,7 @@ class TvViewModel @Inject constructor(
 
     fun getCategories() = viewModelScope.launch {
         val response = tvCategoriesUseCase()
-        _categories.value = handleResponse(response)
+        _categories.emit(handleResponse(response))
     }
 
     init {
@@ -47,7 +47,7 @@ class TvViewModel @Inject constructor(
 
         isLoading = true
         val response = tvCategoryUseCase(currentPage, categoryId)
-        _tvCategories.value = handleResponse(response)
+        _tvCategories.emit(handleResponse(response))
         delay(5000)
         currentPage += 1
         isLoading = false

@@ -46,23 +46,23 @@ class HomeViewModel @Inject constructor(
 
     fun getTrendingMovies() = viewModelScope.launch {
         val response = trendingMoviesUseCase()
-        _movies.value = handleResponse(response)
+        _movies.emit(handleResponse(response))
     }
 
     fun getTrendingTv() = viewModelScope.launch {
         val response = trendingTvUseCase()
-        _tv.value = handleResponse(response)
+        _tv.emit(handleResponse(response))
     }
 
     fun getTrendingPeople() = viewModelScope.launch {
         val response = trendingPeopleUseCase()
-        _people.value = handleResponse(response)
+        _people.emit(handleResponse(response))
     }
 
     fun getSearchedMovie(movie: String) {
         viewModelScope.launch {
             val response = searchMovieUseCase(movie)
-            _searchMovie.value = handleResponse(response)
+            _searchMovie.emit(handleResponse(response))
         }
     }
 }

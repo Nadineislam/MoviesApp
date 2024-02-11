@@ -38,7 +38,7 @@ class MoviesViewModel @Inject constructor(
 
     fun getCategories() = viewModelScope.launch {
         val response = moviesCategoriesUseCase()
-        _categories.value = handleResponse(response)
+        _categories.emit(handleResponse(response))
     }
 
     fun getMovieCategories(categoryId: Int) = viewModelScope.launch {
@@ -47,7 +47,7 @@ class MoviesViewModel @Inject constructor(
         isLoading = true
 
         val response = movieCategoryUseCase(currentPage, categoryId)
-        _movieCategories.value = handlePaginatedResponse(response)
+        _movieCategories.emit(handlePaginatedResponse(response))
         currentPage += 1
         isLoading = false
 
