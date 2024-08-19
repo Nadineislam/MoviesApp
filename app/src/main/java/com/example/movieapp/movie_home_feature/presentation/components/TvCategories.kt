@@ -13,11 +13,14 @@ fun MoviesCategoriesScreen(viewModel: TvViewModel) {
 
 @Composable
 fun GetTvCategories(viewModel: TvViewModel) {
-    val categoriesMovieState by viewModel.categories.collectAsStateWithLifecycle()
-    GetResourceList(
-        resourceState = categoriesMovieState,
-        emptyListMessage = "Error fetching movies"
-    ) { categories ->
-        Categories(categories = categories?.categoriesList ?: emptyList())
-    }
+    val categoriesState by viewModel.state.collectAsStateWithLifecycle()
+
+    GetTvResourceList2(
+        state = categoriesState,
+        emptyListMessage = "Error fetching categories",
+        onSuccessCategories = { categories ->
+            Categories(categories = categories?.categoriesList ?: emptyList())
+        }
+    )
+
 }
