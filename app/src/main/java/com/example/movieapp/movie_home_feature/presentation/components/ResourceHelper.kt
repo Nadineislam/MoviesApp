@@ -9,6 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.movieapp.core.utils.Resource
+import com.example.movieapp.movie_home_feature.data.remote.dto.CategoriesResponse
+import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingTvResponse
+import com.example.movieapp.movie_home_feature.presentation.viewstates.TvViewState
 
 @Composable
 fun <T> GetResourceList(
@@ -35,6 +38,38 @@ fun <T> GetResourceList(
             val message = resourceState.message ?: emptyListMessage
             Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
                 .show()
+        }
+    }
+}
+
+@Composable
+fun GetTvResourceList2(
+    state: TvViewState,
+    emptyListMessage: String,
+    onSuccessCategories: @Composable (CategoriesResponse?) -> Unit = {},
+    onSuccessCategory: @Composable (TrendingTvResponse?) -> Unit = {}
+) {
+    when (state) {
+        is TvViewState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is TvViewState.SuccessTvCategories -> {
+            onSuccessCategories(state.categories)
+        }
+
+        is TvViewState.SuccessTvCategory -> {
+            onSuccessCategory(state.tvCategories)
+        }
+
+        is TvViewState.Error -> {
+            val message = state.message.ifEmpty { emptyListMessage }
+            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG).show()
         }
     }
 }
