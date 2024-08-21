@@ -42,18 +42,30 @@ fun MoviesCategoriesScreen(viewModel: MoviesViewModel) {
 
 @Composable
 fun GetMoviesCategories(viewModel: MoviesViewModel) {
-    val categoriesMovieState by viewModel.categories.collectAsStateWithLifecycle()
-    GetResourceList(
-        resourceState = categoriesMovieState,
-        emptyListMessage = "Error fetching movies"
-    ) { categories ->
-        Categories(categories = categories?.categoriesList ?: emptyList())
-    }
+    val categoriesMovieState by viewModel.moviesState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    GetMoviesResourceList(
+        state = categoriesMovieState,
+        emptyListMessage = "Error fetching movies",
+        onSuccessCategories = { categories ->
+            Categories(
+                categories = categories?.categoriesList ?: emptyList(),
+                navigateToCategory = { categoryId ->
+                    val intent = Intent(context, MoviesCategory::class.java)
+                    intent.putExtra(CATEGORY_ID, categoryId)
+                    context.startActivity(intent)
+                }
+            )
+        }
+    )
 }
 
 @Composable
-fun Categories(categories: List<Categories>) {
-    val context = LocalContext.current
+fun Categories(
+    categories: List<Categories>,
+    navigateToCategory: (Int) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,9 +80,7 @@ fun Categories(categories: List<Categories>) {
                         .background(Color.Transparent)
                         .height(80.dp)
                         .clickable {
-                            val intent = Intent(context, MoviesCategory::class.java)
-                            intent.putExtra(CATEGORY_ID, category.id)
-                            context.startActivity(intent)
+                            navigateToCategory(category.id)
                         }
                 ) {
                     Column(

@@ -1,12 +1,12 @@
 package com.example.movieapp.movie_home_feature
 
 import com.example.movieapp.base.MainCoroutineExt
-import com.example.movieapp.core.utils.Resource
 import com.example.movieapp.movie_home_feature.data.remote.dto.CategoriesResponse
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesResponse
 import com.example.movieapp.movie_home_feature.domain.use_case.MovieCategoryUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.MoviesCategoriesUseCase
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
+import com.example.movieapp.movie_home_feature.presentation.viewstates.MoviesViewState
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,66 +36,66 @@ class MoviesViewModelTest {
     val mainCoroutineExt = MainCoroutineExt()
 
     @Test
-    fun `when getCategories is called with success state then the list of meals should be retrieved`() =
+    fun `when getMoviesCategories is called with success state then the list of movie categories should be retrieved`() =
         runBlocking {
             val mockedResponse = Response.success(CategoriesResponse(listOf()))
             Mockito.`when`(moviesCategoriesUseCase()).thenReturn(mockedResponse)
 
-            viewModel.getCategories()
+            viewModel.getMoviesCategories()
 
             assertTrue(
-                (viewModel.categories.value as Resource.Success)
-                    .data == mockedResponse.body()
+                (viewModel.moviesState.value as MoviesViewState.SuccessMoviesCategories)
+                    .categories == mockedResponse.body()
             )
         }
 
     @Test
-    fun `when getCategories is called with failure state then error should be retrieved`() =
+    fun `when getMoviesCategories is called with failure state then error should be retrieved`() =
         runBlocking {
             val errorMessage = "An error occurred"
             val mockedResponse =
                 Response.error<CategoriesResponse>(400, errorMessage.toResponseBody(null))
             Mockito.`when`(moviesCategoriesUseCase()).thenReturn(mockedResponse)
 
-            viewModel.getCategories()
+            viewModel.getMoviesCategories()
 
             assertEquals(
                 errorMessage,
-                (viewModel.categories.value as Resource.Error).message
+                (viewModel.moviesState.value as MoviesViewState.Error).message
             )
-
         }
 
     @Test
-    fun `when getMovieCategories is called with success state then the list of meals should be retrieved`() =
+    fun `when getMovieCategory is called with success state then the list of movie categories should be retrieved`() =
         runBlocking {
-            val id = 1
+            val categoryId = 1
+            val page = 1
             val mockedResponse = Response.success(TrendingMoviesResponse(0, listOf()))
-            Mockito.`when`(movieCategoryUseCase(1,id)).thenReturn(mockedResponse)
+            Mockito.`when`(movieCategoryUseCase(page, categoryId)).thenReturn(mockedResponse)
 
-            viewModel.getMovieCategories(id)
+            viewModel.getMovieCategory(page, categoryId)
 
             assertTrue(
-                (viewModel.movieCategories.value as Resource.Success)
-                    .data == mockedResponse.body()
+                (viewModel.moviesState.value as MoviesViewState.SuccessMovieCategory)
+                    .category == mockedResponse.body()
             )
         }
 
     @Test
-    fun `when getMovieCategories is called with failure state then error should be retrieved`() =
+    fun `when getMovieCategory is called with failure state then error should be retrieved`() =
         runBlocking {
-            val id = 1
+            val categoryId = 1
+            val page = 1
             val errorMessage = "An error occurred"
             val mockedResponse =
                 Response.error<TrendingMoviesResponse>(400, errorMessage.toResponseBody(null))
-            Mockito.`when`(movieCategoryUseCase(1,id)).thenReturn(mockedResponse)
+            Mockito.`when`(movieCategoryUseCase(page, categoryId)).thenReturn(mockedResponse)
 
-            viewModel.getMovieCategories(id)
+            viewModel.getMovieCategory(page, categoryId)
 
             assertEquals(
                 errorMessage,
-                (viewModel.movieCategories.value as Resource.Error).message
+                (viewModel.moviesState.value as MoviesViewState.Error).message
             )
-
         }
 }

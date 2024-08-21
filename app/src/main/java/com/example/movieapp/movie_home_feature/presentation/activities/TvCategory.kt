@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.extensions.onBottomReached
 import com.example.movieapp.core.utils.Constants
 import com.example.movieapp.movie_home_feature.presentation.activities.ui.theme.MovieAppTheme
-import com.example.movieapp.movie_home_feature.presentation.components.GetTvResourceList2
+import com.example.movieapp.movie_home_feature.presentation.components.GetTvResourceList
 import com.example.movieapp.movie_home_feature.presentation.components.MovieItem
 import com.example.movieapp.movie_home_feature.presentation.intents.TvIntent
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel
@@ -56,7 +56,7 @@ fun TvCategoryScreen(viewModel: TvViewModel) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        GetTvResourceList2(
+        GetTvResourceList(
             state = tvCategoryState,
             emptyListMessage = "Error fetching TV shows",
             onSuccessCategory = { resource ->
