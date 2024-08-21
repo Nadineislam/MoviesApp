@@ -12,15 +12,17 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import com.example.movieapp.movie_home_feature.presentation.components.MovieItem
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.extensions.onBottomReached
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
-import com.example.movieapp.movie_home_feature.presentation.components.GetResourceList
 import com.example.movieapp.movie_home_feature.presentation.activities.ui.theme.MovieAppTheme
-import com.example.movieapp.movie_home_feature.presentation.components.MovieItem
+import com.example.movieapp.movie_home_feature.presentation.components.GetMoviesResourceList
+import com.example.movieapp.movie_home_feature.presentation.intents.MoviesIntent
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +34,8 @@ class MoviesCategory : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val intent = intent
         categoryId = intent.getIntExtra(CATEGORY_ID, 0)
-        moviesViewModel.getMovieCategories(categoryId ?: 0)
+        moviesViewModel.processIntent(
+            MoviesIntent.FetchMovieCategory( 1,categoryId ?: 0))
         setContent {
             MovieAppTheme {
                 Surface(
@@ -48,14 +51,14 @@ class MoviesCategory : ComponentActivity() {
 
 @Composable
 fun MoviesCategoryScreen(viewModel: MoviesViewModel) {
-    val movieCategoriesState = viewModel.movieCategories.collectAsStateWithLifecycle()
+    val movieCategoriesState by viewModel.moviesState.collectAsStateWithLifecycle()
     val lazyGridState = rememberLazyGridState()
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        GetResourceList(
-            resourceState = movieCategoriesState.value,
+        GetMoviesResourceList(
+            state = movieCategoriesState,
             emptyListMessage = "Error fetching movies"
         ) { resource ->
             val movieList = resource?.trendingMovies
@@ -70,7 +73,10 @@ fun MoviesCategoryScreen(viewModel: MoviesViewModel) {
                         MovieItem(movie = movie)
 
                         lazyGridState.onBottomReached(buffer = 5) {
-                            viewModel.getMovieCategories(viewModel.currentCategory ?: 0)
+                            viewModel.processIntent(MoviesIntent.FetchMovieCategory(
+                                categoryId = viewModel.currentCategory ?: 0,
+                                page = viewModel.currentPage
+                            ))
                         }
                     }
                 }

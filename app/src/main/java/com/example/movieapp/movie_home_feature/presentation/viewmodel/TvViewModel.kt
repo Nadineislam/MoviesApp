@@ -2,7 +2,7 @@ package com.example.movieapp.movie_home_feature.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieapp.core.utils.handleAndEmitTvResponse
+import com.example.movieapp.core.utils.handleAndEmitResponse
 import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoriesUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.TvCategoryUseCase
 import com.example.movieapp.movie_home_feature.presentation.intents.TvIntent
@@ -37,32 +37,28 @@ class TvViewModel @Inject constructor(
             }
         }
     }
-
-    fun loadTvCategories() =
-        viewModelScope.launch {
-            handleAndEmitTvResponse(
-                tvCategoriesUseCase(),
-                { data -> TvViewState.SuccessTvCategories(data) }
-            ) { event ->
-                _state.value = event
-            }
-        }
-
+    fun loadTvCategories() = viewModelScope.launch {
+        handleAndEmitResponse(
+            response = tvCategoriesUseCase(),
+            createSuccessEvent = { data -> TvViewState.SuccessTvCategories(data) },
+            emitEvent = { event -> _state.value = event },
+            onErrorEvent = { errorMessage -> TvViewState.Error(errorMessage) }
+        )
+    }
 
     fun loadTvCategory(page: Int, categoryId: Int) = viewModelScope.launch {
         if (isLoading) return@launch
         isLoading = true
 
-        handleAndEmitTvResponse(
-            tvCategoryUseCase(page, categoryId),
-            { data -> TvViewState.SuccessTvCategory(data) }
-        ) { event ->
-            _state.value = event
-        }
+        handleAndEmitResponse(
+            response = tvCategoryUseCase(page, categoryId),
+            createSuccessEvent = { data -> TvViewState.SuccessTvCategory(data) },
+            emitEvent = { event -> _state.value = event },
+            onErrorEvent = { errorMessage -> TvViewState.Error(errorMessage) }
+        )
 
         isLoading = false
         currentCategory = categoryId
         currentPage = page + 1
-
     }
 }

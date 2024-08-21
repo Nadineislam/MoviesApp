@@ -10,7 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.movieapp.core.utils.Resource
 import com.example.movieapp.movie_home_feature.data.remote.dto.CategoriesResponse
+import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesResponse
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingTvResponse
+import com.example.movieapp.movie_home_feature.presentation.viewstates.MoviesViewState
 import com.example.movieapp.movie_home_feature.presentation.viewstates.TvViewState
 
 @Composable
@@ -43,7 +45,7 @@ fun <T> GetResourceList(
 }
 
 @Composable
-fun GetTvResourceList2(
+fun GetTvResourceList(
     state: TvViewState,
     emptyListMessage: String,
     onSuccessCategories: @Composable (CategoriesResponse?) -> Unit = {},
@@ -68,6 +70,37 @@ fun GetTvResourceList2(
         }
 
         is TvViewState.Error -> {
+            val message = state.message.ifEmpty { emptyListMessage }
+            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG).show()
+        }
+    }
+}
+@Composable
+fun GetMoviesResourceList(
+    state: MoviesViewState,
+    emptyListMessage: String,
+    onSuccessCategories: @Composable (CategoriesResponse?) -> Unit = {},
+    onSuccessCategory: @Composable (TrendingMoviesResponse?) -> Unit = {}
+) {
+    when (state) {
+        is MoviesViewState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is MoviesViewState.SuccessMoviesCategories -> {
+            onSuccessCategories(state.categories)
+        }
+
+        is MoviesViewState.SuccessMovieCategory -> {
+            onSuccessCategory(state.category)
+        }
+
+        is MoviesViewState.Error -> {
             val message = state.message.ifEmpty { emptyListMessage }
             Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG).show()
         }
