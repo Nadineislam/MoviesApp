@@ -2,16 +2,15 @@ package com.example.movieapp.movie_home_feature.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieapp.core.utils.Resource
-import com.example.movieapp.core.utils.handleResponse
-import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesResponse
-import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingPeopleResponse
-import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingTvResponse
+import com.example.movieapp.core.utils.handleAndEmitResponse
 import com.example.movieapp.movie_home_feature.domain.use_case.SearchMovieUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.TrendingMoviesUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.TrendingPeopleUseCase
 import com.example.movieapp.movie_home_feature.domain.use_case.TrendingTvUseCase
+import com.example.movieapp.movie_home_feature.presentation.intents.HomeIntent
+import com.example.movieapp.movie_home_feature.presentation.viewstates.HomeViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -24,46 +23,75 @@ class HomeViewModel @Inject constructor(
     private val trendingPeopleUseCase: TrendingPeopleUseCase,
     private val searchMovieUseCase: SearchMovieUseCase
 ) : ViewModel() {
-    private val _movies: MutableStateFlow<Resource<TrendingMoviesResponse>> =
-        MutableStateFlow(Resource.Loading())
-    val movies = _movies.asStateFlow()
-    private val _tv: MutableStateFlow<Resource<TrendingTvResponse>> =
-        MutableStateFlow(Resource.Loading())
-    val tv = _tv.asStateFlow()
-    private val _people: MutableStateFlow<Resource<TrendingPeopleResponse>> =
-        MutableStateFlow(Resource.Loading())
-    val people = _people.asStateFlow()
-
-    private val _searchMovie = MutableStateFlow<Resource<TrendingTvResponse>>(Resource.Loading())
-    val searchMovie = _searchMovie.asStateFlow()
+    private val _homeState = MutableStateFlow<HomeViewState>(HomeViewState.Loading)
+    val homeState = _homeState.asStateFlow()
 
     init {
-        getTrendingMovies()
-        getTrendingTv()
-        getTrendingPeople()
+        processIntent(HomeIntent.LoadAllTrendingData)
     }
 
-
-    fun getTrendingMovies() = viewModelScope.launch {
-        val response = trendingMoviesUseCase()
-        _movies.emit(handleResponse(response))
-    }
-
-    fun getTrendingTv() = viewModelScope.launch {
-        val response = trendingTvUseCase()
-        _tv.emit(handleResponse(response))
-    }
-
-    fun getTrendingPeople() = viewModelScope.launch {
-        val response = trendingPeopleUseCase()
-        _people.emit(handleResponse(response))
-    }
-
-    fun getSearchedMovie(movie: String) {
+    fun processIntent(intent: HomeIntent) {
         viewModelScope.launch {
-            val response = searchMovieUseCase(movie)
-            _searchMovie.emit(handleResponse(response))
+            when (intent) {
+                is HomeIntent.LoadTrendingMovies -> loadTrendingMovies()
+                is HomeIntent.LoadTrendingTvShows -> loadTrendingTvShows()
+                is HomeIntent.LoadTrendingPeople -> loadTrendingPeople()
+                is HomeIntent.SearchMovies -> searchMovies(intent.query)
+                is HomeIntent.LoadAllTrendingData -> loadAllTrendingData() // Handle new Intent
+            }
         }
+    }
+
+    private fun loadTrendingMovies() = viewModelScope.launch {
+        handleAndEmitResponse(
+            response = trendingMoviesUseCase(),
+            createSuccessEvent = { data -> HomeViewState.SuccessMovies(data) },
+            emitEvent = { event -> _homeState.value = event },
+            onErrorEvent = { errorMessage -> HomeViewState.Error(errorMessage) }
+        )
+    }
+
+    private fun loadTrendingTvShows() = viewModelScope.launch {
+        handleAndEmitResponse(
+            response = trendingTvUseCase(),
+            createSuccessEvent = { data -> HomeViewState.SuccessTvShows(data) },
+            emitEvent = { event -> _homeState.value = event },
+            onErrorEvent = { errorMessage -> HomeViewState.Error(errorMessage) }
+        )
+    }
+
+    private fun loadTrendingPeople() = viewModelScope.launch {
+        handleAndEmitResponse(
+            response = trendingPeopleUseCase(),
+            createSuccessEvent = { data -> HomeViewState.SuccessPeople(data) },
+            emitEvent = { event -> _homeState.value = event },
+            onErrorEvent = { errorMessage -> HomeViewState.Error(errorMessage) }
+        )
+    }
+
+    private fun searchMovies(query: String) = viewModelScope.launch {
+        handleAndEmitResponse(
+            response = searchMovieUseCase(query),
+            createSuccessEvent = { data -> HomeViewState.SuccessSearchResults(data) },
+            emitEvent = { event -> _homeState.value = event },
+            onErrorEvent = { errorMessage -> HomeViewState.Error(errorMessage) }
+        )
+    }
+
+    private fun loadAllTrendingData() = viewModelScope.launch {
+        val moviesDeferred = async { trendingMoviesUseCase() }
+        val tvShowsDeferred = async { trendingTvUseCase() }
+        val peopleDeferred = async { trendingPeopleUseCase() }
+
+        val moviesResponse = moviesDeferred.await()
+        val tvShowsResponse = tvShowsDeferred.await()
+        val peopleResponse = peopleDeferred.await()
+
+        _homeState.value = HomeViewState.Success(
+            movies = moviesResponse.body(),
+            tvShows = tvShowsResponse.body(),
+            people = peopleResponse.body()
+        )
     }
 }
 
