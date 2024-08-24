@@ -8,21 +8,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.example.movieapp.core.utils.Resource
 import com.example.movieapp.movie_home_feature.data.remote.dto.CategoriesResponse
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingMoviesResponse
+import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingPeopleResponse
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingTvResponse
+import com.example.movieapp.movie_home_feature.presentation.viewstates.HomeViewState
 import com.example.movieapp.movie_home_feature.presentation.viewstates.MoviesViewState
 import com.example.movieapp.movie_home_feature.presentation.viewstates.TvViewState
-
 @Composable
-fun <T> GetResourceList(
-    resourceState: Resource<T>,
+fun GetHomeResourceList(
+    state: HomeViewState,
     emptyListMessage: String,
-    successBlock: @Composable (T?) -> Unit
+    onSuccessMovies: @Composable (TrendingMoviesResponse?) -> Unit = {},
+    onSuccessTvShows: @Composable (TrendingTvResponse?) -> Unit = {},
+    onSuccessPeople: @Composable (TrendingPeopleResponse?) -> Unit = {},
+    onSuccessSearchResults: @Composable (TrendingTvResponse?) -> Unit = {} // Adjust if search results are not TV related
 ) {
-    when (resourceState) {
-        is Resource.Loading -> {
+    when (state) {
+        is HomeViewState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -30,19 +33,35 @@ fun <T> GetResourceList(
                 CircularProgressIndicator()
             }
         }
-
-        is Resource.Success -> {
-            val items = resourceState.data
-            successBlock(items)
+        is HomeViewState.SuccessMovies -> {
+            onSuccessMovies(state.movies)
+        }
+        is HomeViewState.SuccessTvShows -> {
+            onSuccessTvShows(state.tvShows)
+        }
+        is HomeViewState.SuccessPeople -> {
+            onSuccessPeople(state.people)
+        }
+        is HomeViewState.SuccessSearchResults -> {
+            onSuccessSearchResults(state.searchResults)
+        }
+        is HomeViewState.Error -> {
+            val message = state.message.ifEmpty { emptyListMessage }
+            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG).show()
         }
 
-        is Resource.Error -> {
-            val message = resourceState.message ?: emptyListMessage
-            Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG)
-                .show()
+        is HomeViewState.Success -> {
+            state.movies?.let { onSuccessMovies(it) }
+            state.tvShows?.let { onSuccessTvShows(it) }
+            state.people?.let { onSuccessPeople(it) }
         }
     }
 }
+
+
+
+
+
 
 @Composable
 fun GetTvResourceList(

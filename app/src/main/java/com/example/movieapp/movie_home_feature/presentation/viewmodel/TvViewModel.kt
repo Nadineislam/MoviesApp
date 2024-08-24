@@ -42,8 +42,7 @@ class TvViewModel @Inject constructor(
             response = tvCategoriesUseCase(),
             createSuccessEvent = { data -> TvViewState.SuccessTvCategories(data) },
             emitEvent = { event -> _state.value = event },
-            onErrorEvent = { errorMessage -> TvViewState.Error(errorMessage) }
-        )
+        ) { errorMessage -> TvViewState.Error(errorMessage) }
     }
 
     fun loadTvCategory(page: Int, categoryId: Int) = viewModelScope.launch {
@@ -54,8 +53,7 @@ class TvViewModel @Inject constructor(
             response = tvCategoryUseCase(page, categoryId),
             createSuccessEvent = { data -> TvViewState.SuccessTvCategory(data) },
             emitEvent = { event -> _state.value = event },
-            onErrorEvent = { errorMessage -> TvViewState.Error(errorMessage) }
-        )
+        ) { errorMessage -> TvViewState.Error(errorMessage) }
 
         isLoading = false
         currentCategory = categoryId

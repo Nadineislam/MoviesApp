@@ -45,9 +45,8 @@ class MoviesViewModel @Inject constructor(
         handleAndEmitResponse(
             response = moviesCategoriesUseCase(),
             createSuccessEvent = { data -> MoviesViewState.SuccessMoviesCategories(data) },
-            emitEvent = { event -> _moviesState.value = event },
-            onErrorEvent = { errorMessage -> MoviesViewState.Error(errorMessage) }
-        )
+            emitEvent = { event -> _moviesState.value = event }
+        ) { errorMessage -> MoviesViewState.Error(errorMessage) }
     }
 
     fun getMovieCategory(page: Int, categoryId: Int) = viewModelScope.launch {
@@ -57,9 +56,8 @@ class MoviesViewModel @Inject constructor(
         handleAndEmitResponse(
             response = movieCategoryUseCase(page, categoryId),
             createSuccessEvent = { data -> MoviesViewState.SuccessMovieCategory(data) },
-            emitEvent = { event -> _moviesState.value = event },
-            onErrorEvent = { errorMessage -> MoviesViewState.Error(errorMessage) }
-        )
+            emitEvent = { event -> _moviesState.value = event }
+        ) { errorMessage -> MoviesViewState.Error(errorMessage) }
 
         currentPage += 1
         isLoading = false

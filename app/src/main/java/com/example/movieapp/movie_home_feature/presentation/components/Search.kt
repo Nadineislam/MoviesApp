@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,22 +39,20 @@ import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
 import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
 import com.example.movieapp.movie_home_feature.presentation.activities.MovieDetails
+import com.example.movieapp.movie_home_feature.presentation.intents.HomeIntent
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(viewModel: HomeViewModel) {
     val searchQuery = remember { mutableStateOf("") }
-    val searchMovieState = viewModel.searchMovie.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         TextField(
             value = searchQuery.value,
             onValueChange = { query ->
                 searchQuery.value = query
-                viewModel.getSearchedMovie(query)
+                viewModel.processIntent(HomeIntent.SearchMovies(query))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,19 +60,23 @@ fun SearchScreen(viewModel: HomeViewModel) {
             shape = RoundedCornerShape(16.dp),
             placeholder = { Text(text = "Search Movies..") }
         )
-        GetResourceList(
-            resourceState = searchMovieState.value,
-            emptyListMessage = "Error fetching movies"
-        ) { resource ->
-            val movieList = resource?.trendingTv
-            movieList?.let { movies ->
-                LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
-                    items(movies) { movie ->
-                        MovieItem(movie = movie)
+
+        val homeState by viewModel.homeState.collectAsStateWithLifecycle()
+
+        GetHomeResourceList(
+            state = homeState,
+            emptyListMessage = "Error fetching movies",
+            onSuccessSearchResults = { searchResults ->
+                val movieList = searchResults?.trendingTv
+                movieList?.let { movies ->
+                    LazyVerticalGrid(columns = GridCells.Adaptive(150.dp)) {
+                        items(movies) { movie ->
+                            MovieItem(movie = movie)
+                        }
                     }
                 }
             }
-        }
+        )
     }
 }
 
