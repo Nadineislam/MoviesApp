@@ -7,7 +7,7 @@ https://github.com/Nadineislam/MoviesApp/assets/96357226/1b6f26a6-bfae-48e6-b779
 
 # Libraries and technologies used
 * Retrofit : making HTTP connection with the rest API and convert movie json file to Kotlin/Java object. <br />
-* MVVM : Saperate logic code from views and save the state in case the screen configuration changes. <br />
+* MVI: using a unidirectional data flow, where the View renders a single state based on user intents and retains it across screen configuration changes. <br />
 * Coroutines : do some long running operations in the background. <br />
 * Clean Architecture : For organizing code in a way that promotes separation of concerns. <br />
 
