@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.movieapp.R
@@ -41,7 +42,7 @@ import com.example.movieapp.movie_home_feature.presentation.viewstates.HomeViewS
 
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
+fun HomeScreen(viewModel: HomeViewModel= hiltViewModel(), navController: NavController) {
     val homeState by viewModel.homeState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewModel.processIntent(HomeIntent.LoadAllTrendingData)

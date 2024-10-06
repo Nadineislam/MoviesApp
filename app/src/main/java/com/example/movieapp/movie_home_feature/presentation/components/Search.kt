@@ -32,6 +32,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.movieapp.core.utils.Constants
@@ -44,7 +45,7 @@ import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewMo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(viewModel: HomeViewModel) {
+fun SearchScreen(viewModel: HomeViewModel= hiltViewModel()) {
     val searchQuery = remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize()) {

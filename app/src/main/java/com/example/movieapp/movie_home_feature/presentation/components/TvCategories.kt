@@ -4,19 +4,14 @@ import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
 import com.example.movieapp.movie_home_feature.presentation.activities.TvCategory
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel
 
 @Composable
-fun MoviesCategoriesScreen(viewModel: TvViewModel) {
-    GetTvCategories(viewModel = viewModel)
-
-}
-
-@Composable
-fun GetTvCategories(viewModel: TvViewModel) {
+fun TvCategoriesScreen(viewModel: TvViewModel= hiltViewModel()) {
     val categoriesState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
