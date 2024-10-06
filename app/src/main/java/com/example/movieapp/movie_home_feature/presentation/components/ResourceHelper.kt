@@ -22,7 +22,7 @@ fun GetHomeResourceList(
     onSuccessMovies: @Composable (TrendingMoviesResponse?) -> Unit = {},
     onSuccessTvShows: @Composable (TrendingTvResponse?) -> Unit = {},
     onSuccessPeople: @Composable (TrendingPeopleResponse?) -> Unit = {},
-    onSuccessSearchResults: @Composable (TrendingTvResponse?) -> Unit = {} // Adjust if search results are not TV related
+    onSuccessSearchResults: @Composable (TrendingTvResponse?) -> Unit = {}
 ) {
     when (state) {
         is HomeViewState.Loading -> {
@@ -30,7 +30,7 @@ fun GetHomeResourceList(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(progress = 0.5f)
             }
         }
         is HomeViewState.SuccessMovies -> {
@@ -76,7 +76,7 @@ fun GetTvResourceList(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(progress = 0.5f)
             }
         }
 
@@ -107,7 +107,7 @@ fun GetMoviesResourceList(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(progress = 0.5f)
             }
         }
 
