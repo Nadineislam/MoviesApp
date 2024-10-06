@@ -1,6 +1,6 @@
 package com.example.movieapp.movie_home_feature.di
 
-import com.example.movieapp.core.utils.Constants.Companion.BASE_URL
+import com.example.movieapp.BuildConfig
 import com.example.movieapp.movie_home_feature.data.remote.MoviesApi
 import com.example.movieapp.movie_home_feature.data.repository.HomeRepositoryImpl
 import com.example.movieapp.movie_home_feature.data.repository.MoviesRepositoryImpl
@@ -57,7 +57,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
         .build()
 
