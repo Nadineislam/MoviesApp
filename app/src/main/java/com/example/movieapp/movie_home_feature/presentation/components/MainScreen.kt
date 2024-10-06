@@ -18,24 +18,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.movieapp.movie_home_feature.presentation.viewmodel.HomeViewModel
-import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
-import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(
-    viewModel: HomeViewModel,
-    moviesViewModel: MoviesViewModel,
-    tvViewModel: TvViewModel
-) {
+fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(bottomBar = { BottomBar(navController = navController) }) { paddingValues ->
         BottomNavGraph(
-            viewModel = viewModel,
             navController = navController,
-            moviesViewModel,
-            tvViewModel,
             modifier = Modifier.padding(paddingValues)
         )
     }

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieapp.core.utils.Constants.Companion.CATEGORY_ID
 import com.example.movieapp.movie_home_feature.data.remote.dto.Categories
@@ -35,13 +36,7 @@ import com.example.movieapp.movie_home_feature.presentation.activities.MoviesCat
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
 
 @Composable
-fun MoviesCategoriesScreen(viewModel: MoviesViewModel) {
-    GetMoviesCategories(viewModel = viewModel)
-
-}
-
-@Composable
-fun GetMoviesCategories(viewModel: MoviesViewModel) {
+fun MoviesCategoriesScreen(viewModel: MoviesViewModel= hiltViewModel()) {
     val categoriesMovieState by viewModel.moviesState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
