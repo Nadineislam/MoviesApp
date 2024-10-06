@@ -20,6 +20,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        buildConfigField ("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+        buildConfigField ("String", "API_KEY", "\"15bfb3d770d73513c71ab9f787cbe27b\"")
     }
 
     buildTypes {
@@ -37,6 +39,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.3'
