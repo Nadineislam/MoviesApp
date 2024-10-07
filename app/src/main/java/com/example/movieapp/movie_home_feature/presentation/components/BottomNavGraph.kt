@@ -7,6 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun BottomNavGraph(
@@ -28,7 +30,7 @@ fun BottomNavGraph(
             TvCategoriesScreen(navController = navController)
         }
         composable(BottomBarScreen.Search.route) {
-            SearchScreen()
+            SearchScreen(navController = navController)
         }
         composable(
             route = "movies_category_screen/{categoryId}",
@@ -36,7 +38,7 @@ fun BottomNavGraph(
         ) { backStackEntry ->
             val categoryId = backStackEntry.arguments?.getInt("categoryId")
             categoryId?.let {
-                MoviesCategoryScreen(categoryId = it)
+                MoviesCategoryScreen(categoryId = it, navController = navController)
             }
         }
         composable(
@@ -45,8 +47,42 @@ fun BottomNavGraph(
         ) { backStackEntry ->
             val categoryId = backStackEntry.arguments?.getInt("categoryId")
             categoryId?.let {
-                TvCategoryScreen(categoryId = it)
+                TvCategoryScreen(categoryId = it, navController = navController)
             }
+        }
+        composable(
+            route = "movie_details_screen/{movieName}/{moviePoster}/{movieOverview}/{movieVote}",
+            arguments = listOf(
+                navArgument("movieName") { type = NavType.StringType },
+                navArgument("moviePoster") { type = NavType.StringType },
+                navArgument("movieOverview") { type = NavType.StringType },
+                navArgument("movieVote") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+
+            val movieName = URLDecoder.decode(backStackEntry.arguments?.getString("movieName"), StandardCharsets.UTF_8.toString())
+            val moviePoster = URLDecoder.decode(backStackEntry.arguments?.getString("moviePoster"), StandardCharsets.UTF_8.toString())
+            val movieOverview = URLDecoder.decode(backStackEntry.arguments?.getString("movieOverview"), StandardCharsets.UTF_8.toString())
+            val movieVote = URLDecoder.decode(backStackEntry.arguments?.getString("movieVote"), StandardCharsets.UTF_8.toString())
+
+            MovieDetailsScreen(
+                movieName = movieName,
+                moviePoster = moviePoster,
+                movieOverview = movieOverview,
+                movieVote = movieVote
+            )
+        }
+        composable(
+            route = "people_details_screen/{personName}/{personPoster}",
+            arguments = listOf(
+                navArgument("personName") { type = NavType.StringType },
+                navArgument("personPoster") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val personName = URLDecoder.decode(backStackEntry.arguments?.getString("personName"), StandardCharsets.UTF_8.toString())
+            val personPoster = URLDecoder.decode(backStackEntry.arguments?.getString("personPoster"), StandardCharsets.UTF_8.toString())
+
+            PersonDetailsScreen(personName = personName, personPoster = personPoster)
         }
     }
 }

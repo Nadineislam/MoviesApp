@@ -23,15 +23,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.movieapp.core.utils.Constants.Companion.IMAGE_BASE_URL
 import com.example.movieapp.core.utils.Constants.Companion.PIC_POSTER_PATH
 import com.example.movieapp.movie_home_feature.data.remote.dto.Movies
 import com.example.movieapp.movie_home_feature.data.remote.dto.People
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
-fun TrendingList(items: List<Any>, onItemClick: (Any) -> Unit) {
+fun TrendingList(items: List<Any>, navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyRow {
             items(items) { item ->
@@ -40,7 +43,73 @@ fun TrendingList(items: List<Any>, onItemClick: (Any) -> Unit) {
                         .padding(9.dp)
                         .fillMaxHeight()
                         .width(140.dp)
-                        .clickable { onItemClick(item) },
+                        .clickable {
+                            when (item) {
+                                is People -> {
+                                    val encodedName = URLEncoder.encode(
+                                        item.name,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    val encodedPoster = URLEncoder.encode(
+                                        item.poster,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+
+                                    navController.navigate(
+                                        "people_details_screen/$encodedName/$encodedPoster"
+                                    )
+                                }
+
+                                is Tv -> {
+                                    val encodedName = URLEncoder.encode(
+                                        item.name,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    val encodedPoster = URLEncoder.encode(
+                                        item.poster,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    val encodedOverview = URLEncoder.encode(
+                                        item.overView,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    val encodedVote = URLEncoder.encode(
+                                        item.voteAverage.toString(),
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+
+                                    navController.navigate(
+                                        "movie_details_screen/$encodedName/$encodedPoster/$encodedOverview/$encodedVote"
+                                    )
+                                }
+
+                                is Movies -> {
+                                    val encodedName = URLEncoder.encode(
+                                        item.name,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    val encodedPoster = URLEncoder.encode(
+                                        item.posterPath,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    val encodedOverview = URLEncoder.encode(
+                                        item.overView,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    val encodedVote = URLEncoder.encode(
+                                        item.voteAverage.toString(),
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+
+                                    navController.navigate(
+                                        "movie_details_screen/$encodedName/$encodedPoster/$encodedOverview/$encodedVote"
+                                    )
+                                }
+
+                                else -> {
+                                }
+                            }
+                        },
                     shape = RoundedCornerShape(8.dp),
                     border = BorderStroke(width = 1.dp, color = Color.LightGray)
                 ) {

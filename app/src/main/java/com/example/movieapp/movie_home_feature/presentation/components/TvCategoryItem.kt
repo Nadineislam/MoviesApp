@@ -1,6 +1,5 @@
 package com.example.movieapp.movie_home_feature.presentation.components
 
-import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,30 +17,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.movieapp.core.utils.Constants
 import com.example.movieapp.movie_home_feature.data.remote.dto.Tv
-import com.example.movieapp.movie_home_feature.presentation.activities.MovieDetails
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
-fun TvItem(tv: Tv) {
-    val context = LocalContext.current
+fun TvItem(tv: Tv,navController: NavController) {
+    val encodedMovieName = URLEncoder.encode(tv.name, StandardCharsets.UTF_8.toString())
+    val encodedMoviePoster = URLEncoder.encode(tv.poster, StandardCharsets.UTF_8.toString())
+    val encodedMovieOverview = URLEncoder.encode(tv.overView, StandardCharsets.UTF_8.toString())
+    val encodedMovieVote = URLEncoder.encode(tv.voteAverage.toString(), StandardCharsets.UTF_8.toString())
     Card(
         modifier = Modifier
             .padding(8.dp)
             .background(Color.White)
             .clickable {
-                val intent = Intent(context, MovieDetails::class.java)
-                intent.putExtra(Constants.MOVIE_OVERVIEW, tv.overView)
-                intent.putExtra(Constants.MOVIE_NAME, tv.name)
-                intent.putExtra(Constants.MOVIE_POSTER, tv.poster)
-                intent.putExtra(Constants.MOVIE_VOTE, tv.voteAverage)
-                context.startActivity(intent)
+                navController.navigate(
+                    "movie_details_screen/$encodedMovieName/$encodedMoviePoster/$encodedMovieOverview/$encodedMovieVote"
+                )
             },
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(width = 1.dp, color = Color.LightGray)

@@ -1,4 +1,4 @@
-package com.example.movieapp.movie_home_feature.presentation.activities
+package com.example.movieapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
