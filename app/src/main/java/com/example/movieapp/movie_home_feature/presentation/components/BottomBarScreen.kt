@@ -24,4 +24,10 @@ sealed class BottomBarScreen(
         title = "TV",
         icon = R.drawable.ic_tv
     )
+
+    object Search : BottomBarScreen(
+        route = "search",
+        title = "Search",
+        icon = R.drawable.ic_search
+    )
 }
