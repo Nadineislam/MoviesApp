@@ -6,8 +6,9 @@ import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingPeopleRes
 import com.example.movieapp.movie_home_feature.data.remote.dto.TrendingTvResponse
 import com.example.movieapp.movie_home_feature.domain.repository.HomeRepository
 import retrofit2.Response
+import javax.inject.Inject
 
-class HomeRepositoryImpl(private val moviesApi: MoviesApi) : HomeRepository {
+class HomeRepositoryImpl @Inject constructor(private val moviesApi: MoviesApi) : HomeRepository {
     override suspend fun getTrendingMovies(): Response<TrendingMoviesResponse> =
         moviesApi.getTrendingMovies()
 
