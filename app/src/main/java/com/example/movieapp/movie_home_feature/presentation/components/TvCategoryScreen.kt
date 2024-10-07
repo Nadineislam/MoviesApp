@@ -13,12 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.example.movieapp.core.extensions.onBottomReached
 import com.example.movieapp.movie_home_feature.presentation.intents.TvIntent
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.TvViewModel
 
 @Composable
-fun TvCategoryScreen(viewModel: TvViewModel = hiltViewModel(), categoryId: Int) {
+fun TvCategoryScreen(viewModel: TvViewModel = hiltViewModel(), categoryId: Int,navController: NavController){
 
     LaunchedEffect(categoryId) {
         viewModel.processIntent(
@@ -44,8 +45,8 @@ fun TvCategoryScreen(viewModel: TvViewModel = hiltViewModel(), categoryId: Int) 
                         contentPadding = PaddingValues(8.dp)
                     ) {
                         items(tv.size) { index ->
-                            val movie = tv[index]
-                            MovieItem(movie = movie)
+                            val tv = tv[index]
+                            TvItem(tv=tv, navController = navController)
 
                             lazyGridState.onBottomReached(buffer = 5) {
                                 viewModel.processIntent(

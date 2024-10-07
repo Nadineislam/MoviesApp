@@ -13,12 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.example.movieapp.core.extensions.onBottomReached
 import com.example.movieapp.movie_home_feature.presentation.intents.MoviesIntent
 import com.example.movieapp.movie_home_feature.presentation.viewmodel.MoviesViewModel
 
 @Composable
-fun MoviesCategoryScreen(viewModel: MoviesViewModel = hiltViewModel(), categoryId: Int) {
+fun MoviesCategoryScreen(viewModel: MoviesViewModel = hiltViewModel(), categoryId: Int,navController: NavController) {
     LaunchedEffect(categoryId) {
         viewModel.processIntent(
             MoviesIntent.FetchMovieCategory(page = 1, categoryId = categoryId)
@@ -44,7 +45,7 @@ fun MoviesCategoryScreen(viewModel: MoviesViewModel = hiltViewModel(), categoryI
                 ) {
                     items(movies.size) { index ->
                         val movie = movies[index]
-                        MovieItem(movie = movie)
+                        MovieItem(movie = movie,navController= navController)
 
                         lazyGridState.onBottomReached(buffer = 5) {
                             viewModel.processIntent(
