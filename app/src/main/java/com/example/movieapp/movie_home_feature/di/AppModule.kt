@@ -1,6 +1,7 @@
 package com.example.movieapp.movie_home_feature.di
 
 import com.example.movieapp.BuildConfig
+import com.example.movieapp.movie_home_feature.data.remote.ApiKeyInterceptor
 import com.example.movieapp.movie_home_feature.data.remote.MoviesApi
 import com.example.movieapp.movie_home_feature.data.repository.HomeRepositoryImpl
 import com.example.movieapp.movie_home_feature.data.repository.MoviesRepositoryImpl
@@ -27,11 +28,13 @@ object AppModule {
     fun providesHomeRepository(api: MoviesApi): HomeRepository {
         return HomeRepositoryImpl(api)
     }
+
     @Provides
     @Singleton
     fun providesMoviesRepository(api: MoviesApi): MoviesRepository {
         return MoviesRepositoryImpl(api)
     }
+
     @Provides
     @Singleton
     fun providesTvRepository(api: MoviesApi): TvRepository {
@@ -47,10 +50,20 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun providesApiKeyInterceptor(): ApiKeyInterceptor {
+        val apiKey = BuildConfig.API_KEY
+        return ApiKeyInterceptor(apiKey)
+    }
+
+    @Singleton
+    @Provides
+    fun providesOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor, apiKeyInterceptor: ApiKeyInterceptor
+    ): OkHttpClient =
         OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(apiKeyInterceptor)
             .build()
 
     @Singleton
