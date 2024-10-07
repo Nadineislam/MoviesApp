@@ -3,12 +3,6 @@ package com.example.movieapp.movie_home_feature.di
 import com.example.movieapp.BuildConfig
 import com.example.movieapp.movie_home_feature.data.remote.ApiKeyInterceptor
 import com.example.movieapp.movie_home_feature.data.remote.MoviesApi
-import com.example.movieapp.movie_home_feature.data.repository.HomeRepositoryImpl
-import com.example.movieapp.movie_home_feature.data.repository.MoviesRepositoryImpl
-import com.example.movieapp.movie_home_feature.data.repository.TvRepositoryImpl
-import com.example.movieapp.movie_home_feature.domain.repository.HomeRepository
-import com.example.movieapp.movie_home_feature.domain.repository.MoviesRepository
-import com.example.movieapp.movie_home_feature.domain.repository.TvRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,24 +16,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Provides
-    @Singleton
-    fun providesHomeRepository(api: MoviesApi): HomeRepository {
-        return HomeRepositoryImpl(api)
-    }
-
-    @Provides
-    @Singleton
-    fun providesMoviesRepository(api: MoviesApi): MoviesRepository {
-        return MoviesRepositoryImpl(api)
-    }
-
-    @Provides
-    @Singleton
-    fun providesTvRepository(api: MoviesApi): TvRepository {
-        return TvRepositoryImpl(api)
-    }
 
     @Singleton
     @Provides
