@@ -1,21 +1,21 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    id(BuildPlugins.ANDROID_LIBRARY)
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.KOTLIN_KAPT)
+    id(BuildPlugins.DAGGER_HILT)
 }
 hilt {
     enableAggregatingTask = false
 }
 android {
     namespace = "com.example.domain"
-    compileSdk = 34
+    compileSdk = BuildConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
-        minSdk = 24
+        minSdk = BuildConfig.MIN_SDK_VERSION
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+      //  consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
