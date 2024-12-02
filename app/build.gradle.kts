@@ -1,22 +1,22 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    id(BuildPlugins.ANDROID_APPLICATION)
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.KOTLIN_KAPT)
+    id(BuildPlugins.DAGGER_HILT)
 }
 hilt {
     enableAggregatingTask = false
 }
 android {
-    namespace = "com.example.movieapp"
-    compileSdk = 34
+    namespace = BuildConfig.APP_ID
+    compileSdk = BuildConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
-        applicationId = "com.example.movieapp"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = BuildConfig.APP_ID
+        minSdk = BuildConfig.MIN_SDK_VERSION
+        targetSdk = BuildConfig.TARGET_SDK_VERSION
+        versionCode = BuildConfig.VERSION_CODE
+        versionName = BuildConfig.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
