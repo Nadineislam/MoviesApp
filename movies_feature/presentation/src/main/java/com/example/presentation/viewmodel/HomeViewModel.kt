@@ -10,6 +10,7 @@ import com.example.domain.use_case.TrendingTvUseCase
 import com.example.presentation.intents.HomeIntent
 import com.example.presentation.viewstates.HomeViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,45 +32,15 @@ class HomeViewModel @Inject constructor(
     }
 
     fun processIntent(intent: HomeIntent) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             when (intent) {
-                is HomeIntent.LoadTrendingMovies -> loadTrendingMovies()
-                is HomeIntent.LoadTrendingTvShows -> loadTrendingTvShows()
-                is HomeIntent.LoadTrendingPeople -> loadTrendingPeople()
                 is HomeIntent.SearchMovies -> searchMovies(intent.query)
                 is HomeIntent.LoadAllTrendingData -> loadAllTrendingData()
             }
         }
     }
 
-    private fun loadTrendingMovies() = viewModelScope.launch {
-        handleAndEmitResponse(
-            response = trendingMoviesUseCase(),
-            createSuccessEvent = { data -> HomeViewState.SuccessMovies(data) },
-            emitEvent = { event -> _homeState.value = event },
-            onErrorEvent = { errorMessage -> HomeViewState.Error(errorMessage) }
-        )
-    }
-
-    private fun loadTrendingTvShows() = viewModelScope.launch {
-        handleAndEmitResponse(
-            response = trendingTvUseCase(),
-            createSuccessEvent = { data -> HomeViewState.SuccessTvShows(data) },
-            emitEvent = { event -> _homeState.value = event },
-            onErrorEvent = { errorMessage -> HomeViewState.Error(errorMessage) }
-        )
-    }
-
-    private fun loadTrendingPeople() = viewModelScope.launch {
-        handleAndEmitResponse(
-            response = trendingPeopleUseCase(),
-            createSuccessEvent = { data -> HomeViewState.SuccessPeople(data) },
-            emitEvent = { event -> _homeState.value = event },
-            onErrorEvent = { errorMessage -> HomeViewState.Error(errorMessage) }
-        )
-    }
-
-    private fun searchMovies(query: String) = viewModelScope.launch {
+    private fun searchMovies(query: String) = viewModelScope.launch(Dispatchers.IO) {
         handleAndEmitResponse(
             response = searchMovieUseCase(query),
             createSuccessEvent = { data -> HomeViewState.SuccessSearchResults(data) },
@@ -78,7 +49,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun loadAllTrendingData() = viewModelScope.launch {
+    private fun loadAllTrendingData() = viewModelScope.launch(Dispatchers.IO) {
         val moviesDeferred = async { trendingMoviesUseCase() }
         val tvShowsDeferred = async { trendingTvUseCase() }
         val peopleDeferred = async { trendingPeopleUseCase() }
