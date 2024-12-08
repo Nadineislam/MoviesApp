@@ -72,4 +72,7 @@ dependencies {
     implementation(project(":movies_feature:domain"))
     implementation(project(":movies_feature:data"))
     implementation(project(":movies_feature:presentation"))
+
+    Chucker()
+
 }

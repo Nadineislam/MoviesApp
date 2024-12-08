@@ -21,5 +21,6 @@ object Versions {
     const val androidTestJUnit = "1.2.1"
     const val jupiterApi = "5.8.0"
     const val kotlinxCoroutinesTest = "1.5.2"
+    const val chucker = "4.0.0"
 
 }

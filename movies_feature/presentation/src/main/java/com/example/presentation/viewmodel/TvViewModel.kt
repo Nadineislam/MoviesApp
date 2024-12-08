@@ -8,6 +8,7 @@ import com.example.domain.use_case.TvCategoryUseCase
 import com.example.presentation.intents.TvIntent
 import com.example.presentation.viewstates.TvViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class TvViewModel @Inject constructor(
     }
 
     fun processIntent(intent: TvIntent) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             when (intent) {
                 is TvIntent.FetchTvCategories -> loadTvCategories()
                 is TvIntent.FetchTvCategory -> loadTvCategory(intent.page, intent.categoryId)
@@ -38,7 +39,7 @@ class TvViewModel @Inject constructor(
         }
     }
 
-    fun loadTvCategories() = viewModelScope.launch {
+    fun loadTvCategories() = viewModelScope.launch(Dispatchers.IO) {
         handleAndEmitResponse(
             response = tvCategoriesUseCase(),
             createSuccessEvent = { data -> TvViewState.SuccessTvCategories(data) },
@@ -46,7 +47,7 @@ class TvViewModel @Inject constructor(
         ) { errorMessage -> TvViewState.Error(errorMessage) }
     }
 
-    fun loadTvCategory(page: Int, categoryId: Int) = viewModelScope.launch {
+    fun loadTvCategory(page: Int, categoryId: Int) = viewModelScope.launch(Dispatchers.IO) {
         if (isLoading) return@launch
         isLoading = true
 

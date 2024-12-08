@@ -49,10 +49,16 @@ object Dependencies {
     const val archCoreTesting = "androidx.arch.core:core-testing:2.2.0"
 
 
-    // AndroidX Testing
     const val composeUiTestJUnit4 = "androidx.compose.ui:ui-test-junit4"
     const val composeUiTestManifest = "androidx.compose.ui:ui-test-manifest"
 
+    const val chuckerDebug = "com.github.chuckerteam.chucker:library:${Versions.chucker}"
+    const val chuckerRelease = "com.github.chuckerteam.chucker:library-no-op:${Versions.chucker}"
+
+}
+fun DependencyHandler.Chucker() {
+    debugImplementation(Dependencies.chuckerDebug)
+    releaseImplementation(Dependencies.chuckerRelease)
 }
 
 fun DependencyHandler.compose() {

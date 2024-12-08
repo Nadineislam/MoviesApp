@@ -8,6 +8,7 @@ import com.example.domain.use_case.MovieCategoryUseCase
 import com.example.presentation.intents.MoviesIntent
 import com.example.presentation.viewstates.MoviesViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class MoviesViewModel @Inject constructor(
     }
 
     fun processIntent(intent: MoviesIntent) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             when (intent) {
                 is MoviesIntent.FetchMoviesCategories -> getMoviesCategories()
                 is MoviesIntent.FetchMovieCategory -> getMovieCategory(
@@ -41,7 +42,7 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun getMoviesCategories() = viewModelScope.launch {
+    fun getMoviesCategories() = viewModelScope.launch(Dispatchers.IO) {
         handleAndEmitResponse(
             response = moviesCategoriesUseCase(),
             createSuccessEvent = { data -> MoviesViewState.SuccessMoviesCategories(data) },
@@ -49,7 +50,7 @@ class MoviesViewModel @Inject constructor(
         ) { errorMessage -> MoviesViewState.Error(errorMessage) }
     }
 
-    fun getMovieCategory(page: Int, categoryId: Int) = viewModelScope.launch {
+    fun getMovieCategory(page: Int, categoryId: Int) = viewModelScope.launch(Dispatchers.IO) {
         if (isLoading) return@launch
         isLoading = true
 
