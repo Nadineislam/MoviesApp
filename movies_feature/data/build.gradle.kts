@@ -1,3 +1,10 @@
+import deps.chucker
+import deps.coroutines
+import deps.hilt
+import deps.moviesFeatureDomain
+import deps.retrofitAndOkHttp
+import plugs.SharedLibraryGradlePlugin
+
 plugins {
     id(BuildPlugins.ANDROID_LIBRARY)
 }
@@ -16,7 +23,7 @@ dependencies {
 
     retrofitAndOkHttp()
 
-    implementation(project(":movies_feature:domain"))
+    moviesFeatureDomain()
 
-    Chucker()
+    chucker()
 }
