@@ -1,3 +1,10 @@
+import deps.compose
+import deps.coroutines
+import deps.hilt
+import deps.paging
+import deps.retrofitAndOkHttp
+import plugs.SharedLibraryGradlePlugin
+
 plugins {
     id(BuildPlugins.ANDROID_LIBRARY)
 }
@@ -6,8 +13,6 @@ android {
     namespace = "com.example.core"
 }
 dependencies {
-
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
 
     compose()
 

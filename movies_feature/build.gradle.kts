@@ -1,3 +1,10 @@
+import deps.coroutines
+import deps.hilt
+import deps.moviesFeaturePresentation
+import deps.retrofitAndOkHttp
+import deps.tests
+import plugs.SharedLibraryGradlePlugin
+
 plugins {
     id(BuildPlugins.ANDROID_LIBRARY)
 }
@@ -17,6 +24,5 @@ dependencies {
 
     retrofitAndOkHttp()
 
-    api(project(":movies_feature:presentation"))
-
+    moviesFeaturePresentation()
 }

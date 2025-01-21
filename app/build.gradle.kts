@@ -1,3 +1,11 @@
+import deps.chucker
+import deps.compose
+import deps.hilt
+import deps.moviesFeatureDataImpl
+import deps.moviesFeatureDomainImpl
+import deps.moviesFeaturePresentationImpl
+import deps.retrofitAndOkHttp
+
 plugins {
     id(BuildPlugins.ANDROID_APPLICATION)
     id(BuildPlugins.KOTLIN_ANDROID)
@@ -69,10 +77,10 @@ dependencies {
 
     retrofitAndOkHttp()
 
-    implementation(project(":movies_feature:domain"))
-    implementation(project(":movies_feature:data"))
-    implementation(project(":movies_feature:presentation"))
+    moviesFeatureDataImpl()
+    moviesFeatureDomainImpl()
+    moviesFeaturePresentationImpl()
 
-    Chucker()
+    chucker()
 
 }

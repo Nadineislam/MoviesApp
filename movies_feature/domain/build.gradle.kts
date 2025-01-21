@@ -1,3 +1,8 @@
+import deps.coroutines
+import deps.hilt
+import deps.retrofitAndOkHttp
+import plugs.SharedLibraryGradlePlugin
+
 plugins {
     id(BuildPlugins.ANDROID_LIBRARY)
 }
