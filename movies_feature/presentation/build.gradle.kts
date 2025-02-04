@@ -18,20 +18,5 @@ android {
 }
 
 dependencies {
-
-    compose()
-
-    coroutines()
-
-    hilt()
-
-    retrofitAndOkHttp()
-
-    paging()
-
-    androidxLifecycle()
-
-    moviesFeatureDomain()
-
-    core()
+hilt()
 }

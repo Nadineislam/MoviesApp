@@ -12,12 +12,8 @@ android {
 }
 
 dependencies {
+hilt()
 
-    coroutines()
-
-    hilt()
-
-    retrofitAndOkHttp()
 
 
 }
