@@ -1,6 +1,5 @@
 import deps.coroutines
 import deps.hilt
-import deps.moviesFeaturePresentation
 import deps.retrofitAndOkHttp
 import deps.tests
 import plugs.SharedLibraryGradlePlugin
@@ -16,13 +15,13 @@ android {
 
 dependencies {
 
-    coroutines()
-
+//    coroutines()
+//
     hilt()
-
-    tests()
-
-    retrofitAndOkHttp()
-
-    moviesFeaturePresentation()
+//
+//    tests()
+//
+//    retrofitAndOkHttp()
+//
+//    moviesFeaturePresentation()
 }

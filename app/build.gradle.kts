@@ -1,10 +1,10 @@
 import deps.chucker
 import deps.compose
+import deps.dataModule
 import deps.hilt
-import deps.moviesFeatureDataImpl
-import deps.moviesFeatureDomainImpl
-import deps.moviesFeaturePresentationImpl
+import deps.movieFeatureModule
 import deps.retrofitAndOkHttp
+import deps.tests
 
 plugins {
     id(BuildPlugins.ANDROID_APPLICATION)
@@ -12,6 +12,7 @@ plugins {
     id(BuildPlugins.KOTLIN_KAPT)
     id(BuildPlugins.DAGGER_HILT)
 }
+
 hilt {
     enableAggregatingTask = false
 }
@@ -86,6 +87,7 @@ android {
 }
 
 dependencies {
+    tests()
 
     compose()
 
@@ -93,10 +95,10 @@ dependencies {
 
     retrofitAndOkHttp()
 
-    moviesFeatureDataImpl()
-    moviesFeatureDomainImpl()
-    moviesFeaturePresentationImpl()
-
+   movieFeatureModule()
+dataModule()
     chucker()
+    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.7.7")
+
 
 }

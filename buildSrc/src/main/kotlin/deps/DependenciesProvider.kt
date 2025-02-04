@@ -33,20 +33,12 @@ fun DependencyHandler.core() {
     moduleImplementation(project(":core"))
 }
 
-fun DependencyHandler.moviesFeaturePresentation() {
-    moduleApi(project(":movies_feature:presentation"))
+fun DependencyHandler.dataModule() {
+    moduleImplementation(project(":core:data"))
 }
 
-fun DependencyHandler.moviesFeaturePresentationImpl() {
-    moduleImplementation(project(":movies_feature:presentation"))
-}
-
-fun DependencyHandler.moviesFeatureDomainImpl() {
-    moduleImplementation(project(":movies_feature:domain"))
-}
-
-fun DependencyHandler.moviesFeatureDataImpl() {
-    moduleImplementation(project(":movies_feature:data"))
+fun DependencyHandler.movieFeatureModule() {
+    moduleImplementation(project(":features:movie_feature"))
 }
 
 
@@ -57,11 +49,24 @@ fun DependencyHandler.hilt() {
     implementation(Dependencies.HILT_NAVIGATION_COMPOSE)
 }
 
+fun DependencyHandler.kotlinx() {
+    implementation(Dependencies.KOTLIN_SERIALIZATION)
+}
+
+fun DependencyHandler.domainModule() {
+    moduleApi(project(":core:domain"))
+}
+
+fun DependencyHandler.presentationModule() {
+    moduleImplementation(project(":core:presentation"))
+}
+
 fun DependencyHandler.retrofitAndOkHttp() {
     implementation(Dependencies.RETROFIT)
     implementation(Dependencies.RETROFIT_CONVERTER_GSON)
     implementation(Dependencies.OKHTTP)
     implementation(Dependencies.OKHTTP_LOGGING_INTERCEPTOR)
+    implementation(Dependencies.RETROFIT_COROUTINES_ADAPTER)
 }
 
 fun DependencyHandler.paging() {
@@ -72,14 +77,14 @@ fun DependencyHandler.tests() {
     testImplementation(Dependencies.JUNIT)
     androidTestImplementation(Dependencies.ESPRESSO)
     androidTestImplementation(Dependencies.CORE_TESTING)
-    androidTestImplementation(Dependencies.COMPOSE_UI_TEST_JUNIT4)
+  //  androidTestImplementation(Dependencies.COMPOSE_UI_TEST_JUNIT4)
     androidTestImplementation(Dependencies.COMPOSE_UI_TEST_MANIFEST)
     testImplementation(Dependencies.MOCKITO)
     testImplementation(Dependencies.JUPITER_API)
     testRuntimeOnly(Dependencies.JUPITER_ENGINE)
-    testImplementation(Dependencies.MOCKITO_INLINE)
     androidTestImplementation(Dependencies.ANDROID_TEST_JUNIT)
     testImplementation(Dependencies.KOTLINX_COROUTINES_TEST)
+    testImplementation(Dependencies.MOCKITO_INLINE)
 }
 
 fun DependencyHandler.androidxLifecycle() {

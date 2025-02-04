@@ -1,5 +1,6 @@
 import deps.chucker
 import deps.coroutines
+import deps.dataModule
 import deps.hilt
 import deps.moviesFeatureDomain
 import deps.retrofitAndOkHttp
@@ -16,14 +17,6 @@ android {
 }
 
 dependencies {
+hilt()
 
-    coroutines()
-
-    hilt()
-
-    retrofitAndOkHttp()
-
-    moviesFeatureDomain()
-
-    chucker()
 }

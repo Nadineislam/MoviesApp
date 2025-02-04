@@ -1,6 +1,5 @@
 package deps
 
-
 object Dependencies {
     const val CORE_KTX = "androidx.core:core-ktx:${DependencyVersions.CORE_KTX}"
     const val LIFECYCLE_VIEWMODEL_COMPOSE = "androidx.lifecycle:lifecycle-viewmodel-compose:${DependencyVersions.LIFECYCLE_VIEWMODEL_COMPOSE}"
@@ -32,6 +31,8 @@ object Dependencies {
     const val RETROFIT_CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${DependencyVersions.RETROFIT}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${DependencyVersions.OKHTTP}"
     const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP}"
+    const val RETROFIT_COROUTINES_ADAPTER =
+        "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${DependencyVersions.RETROFIT_COROUTINE_ADAPTER_VERSION}"
 
     // Paging
     const val PAGING_COMPOSE = "androidx.paging:paging-compose:${DependencyVersions.PAGING_COMPOSE}"
@@ -50,8 +51,10 @@ object Dependencies {
 
 
     const val COMPOSE_UI_TEST_JUNIT4 = "androidx.compose.ui:ui-test-junit4"
-    const val COMPOSE_UI_TEST_MANIFEST = "androidx.compose.ui:ui-test-manifest"
+    const val COMPOSE_UI_TEST_MANIFEST = "androidx.compose.ui:ui-test-manifest:${DependencyVersions.COMPOSE_UI_TEST_JUNIT4}"
 
     const val CHUCKER_DEBUG = "com.github.chuckerteam.chucker:library:${DependencyVersions.CHUCKER}"
     const val CHUCKER_RELEASE = "com.github.chuckerteam.chucker:library-no-op:${DependencyVersions.CHUCKER}"
+    const val KOTLIN_SERIALIZATION = "org.jetbrains.kotlinx:kotlinx-serialization-json:${DependencyVersions.KOTLIN_SERIALIZATIONS}"
+
 }
