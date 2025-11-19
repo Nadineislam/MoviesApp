@@ -41,8 +41,7 @@ fun MovieItem(movie: Movies, navController: NavController) {
             .background(Color.White)
             .clickable {
 
-                navController.navigate(
-                    "movie_details_screen/$encodedMovieName/$encodedMoviePoster/$encodedMovieOverview/$encodedMovieVote"
+                navController.navigate(route = Screens.MovieDetails.createRoute(encodedMovieName, encodedMoviePoster, encodedMovieOverview, encodedMovieVote)
                 )
             },
         shape = RoundedCornerShape(8.dp),

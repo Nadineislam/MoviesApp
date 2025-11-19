@@ -46,7 +46,7 @@ fun GetTvResourceList(
     onSuccessCategories: @Composable (CategoriesResponse?) -> Unit = {},
     onSuccessCategory: @Composable (TrendingTvResponse?) -> Unit = {}
 ) {
-    StateRenderer.of(statRenderer = state, retryAction = { }) {
+    StateRenderer.of(statRenderer = state) {
 
         onSuccessState { output ->
             when (output) {
@@ -68,7 +68,7 @@ fun GetMoviesResourceList(
     onSuccessCategories: @Composable (CategoriesResponse?) -> Unit = {},
     onSuccessCategory: @Composable (TrendingMoviesResponse?) -> Unit = {}
 ) {
-    StateRenderer.of(statRenderer = state, retryAction = { }) {
+    StateRenderer.of(statRenderer = state) {
 
         onSuccessState { output ->
             when (output) {

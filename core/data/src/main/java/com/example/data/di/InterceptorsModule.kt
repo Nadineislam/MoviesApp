@@ -63,7 +63,6 @@ class InterceptorsModule {
             .build()
     }
 
-    // Http Logging Interceptor
     @Provides
     @Singleton
     @Named(LOGGING_INTERCEPTOR_TAG)

@@ -6,5 +6,5 @@ data class People(
     @SerializedName("name")
     val name: String,
     @SerializedName("profile_path")
-    val poster: String
+    val poster: String?
 )

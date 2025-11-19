@@ -46,7 +46,7 @@ fun MoviesCategoriesScreen(
             Categories(
                 categories = categories?.categoriesList ?: emptyList(),
                 navigateToCategory = { categoryId ->
-                    navController.navigate("movies_category_screen/$categoryId")
+                    navController.navigate(Screens.MoviesCategory.createRoute(categoryId))
 
                 }
             )

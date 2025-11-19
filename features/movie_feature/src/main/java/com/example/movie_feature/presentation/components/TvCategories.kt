@@ -17,7 +17,7 @@ fun TvCategoriesScreen(navController: NavController, viewModel: TvViewModel = hi
             Categories(
                 categories = categories?.categoriesList ?: emptyList(),
                 navigateToCategory = { categoryId ->
-                    navController.navigate("tv_category_screen/$categoryId")
+                    navController.navigate(Screens.TvCategory.createRoute(categoryId))
 
                 }
             )

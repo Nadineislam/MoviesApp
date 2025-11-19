@@ -3,6 +3,10 @@ package com.example.movie_feature.data.repository
 import com.example.data.mapper.toDomain
 import com.example.data.source.NetworkDataSource
 import com.example.domain.result.OutCome
+import com.example.domain.result.map
+import com.example.movie_feature.data.mappers.toMoviesModel
+import com.example.movie_feature.data.mappers.toPeopleModel
+import com.example.movie_feature.data.mappers.toTvModel
 import com.example.movie_feature.data.remote.MoviesService
 import com.example.movie_feature.domain.models.TrendingMoviesResponse
 import com.example.movie_feature.domain.models.TrendingPeopleResponse
@@ -19,7 +23,7 @@ class HomeRepositoryImpl @Inject constructor(
             request = { getTrendingMovies() },
             onSuccess = { response, _ -> OutCome.success(response) },
             onError = { errorResponse, code -> OutCome.error(errorResponse.toDomain(code)) }
-        )
+        ).map { it.toMoviesModel() }
     }
 
     override suspend fun getTrendingTv(): OutCome<TrendingTvResponse> {
@@ -27,7 +31,7 @@ class HomeRepositoryImpl @Inject constructor(
             request = { getTrendingTv() },
             onSuccess = { response, _ -> OutCome.success(response) },
             onError = { errorResponse, code -> OutCome.error(errorResponse.toDomain(code)) }
-        )
+        ).map { it.toTvModel() }
     }
 
     override suspend fun getTrendingPeople(): OutCome<TrendingPeopleResponse> {
@@ -35,7 +39,7 @@ class HomeRepositoryImpl @Inject constructor(
             request = { getTrendingPeople() },
             onSuccess = { response, _ -> OutCome.success(response) },
             onError = { errorResponse, code -> OutCome.error(errorResponse.toDomain(code)) }
-        )
+        ).map { it.toPeopleModel() }
     }
 
     override suspend fun getSearchMovie(movieName: String): OutCome<TrendingTvResponse> {
@@ -44,7 +48,7 @@ class HomeRepositoryImpl @Inject constructor(
             onSuccess = { response, _ -> OutCome.success(response) },
             onEmpty = { OutCome.empty() },
             onError = { errorResponse, code -> OutCome.error(errorResponse.toDomain(code)) }
-        )
+        ).map { it.toTvModel() }
     }
 
 }

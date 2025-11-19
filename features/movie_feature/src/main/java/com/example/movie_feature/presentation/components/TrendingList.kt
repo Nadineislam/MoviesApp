@@ -6,10 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,7 +42,7 @@ fun TrendingList(items: List<Any>, navController: NavController) {
                 Card(
                     modifier = Modifier
                         .padding(9.dp)
-                        .fillMaxHeight()
+                        .wrapContentHeight()
                         .width(140.dp)
                         .clickable {
                             when (item) {
@@ -55,8 +56,7 @@ fun TrendingList(items: List<Any>, navController: NavController) {
                                         StandardCharsets.UTF_8.toString()
                                     )
 
-                                    navController.navigate(
-                                        "people_details_screen/$encodedName/$encodedPoster"
+                                    navController.navigate(Screens.PeopleDetails.createRoute(personName = encodedName, personPoster = encodedPoster)
                                     )
                                 }
 
@@ -78,8 +78,7 @@ fun TrendingList(items: List<Any>, navController: NavController) {
                                         StandardCharsets.UTF_8.toString()
                                     )
 
-                                    navController.navigate(
-                                        "movie_details_screen/$encodedName/$encodedPoster/$encodedOverview/$encodedVote"
+                                    navController.navigate(Screens.MovieDetails.createRoute(movieName = encodedName, moviePoster = encodedPoster, movieOverview = encodedOverview, movieVote = encodedVote)
                                     )
                                 }
 
@@ -101,8 +100,7 @@ fun TrendingList(items: List<Any>, navController: NavController) {
                                         StandardCharsets.UTF_8.toString()
                                     )
 
-                                    navController.navigate(
-                                        "movie_details_screen/$encodedName/$encodedPoster/$encodedOverview/$encodedVote"
+                                    navController.navigate(Screens.MovieDetails.createRoute(movieName = encodedName, moviePoster = encodedPoster, movieOverview = encodedOverview, movieVote = encodedVote)
                                     )
                                 }
 
@@ -135,7 +133,7 @@ fun TrendingList(items: List<Any>, navController: NavController) {
                         AsyncImage(
                             model = IMAGE_BASE_URL + PIC_POSTER_PATH + posterPath,
                             contentDescription = "item",
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.height(240.dp),
                             contentScale = ContentScale.Crop
                         )
                         Text(

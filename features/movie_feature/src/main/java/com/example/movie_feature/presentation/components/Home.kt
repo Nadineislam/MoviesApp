@@ -71,7 +71,7 @@ fun HomeLayout(navController: NavController) {
             modifier = Modifier
                 .padding(10.dp)
                 .size(30.dp)
-                .clickable { navController.navigate("Search") }
+                .clickable { navController.navigate(BottomBarScreen.Search.route) }
         )
     }
 }

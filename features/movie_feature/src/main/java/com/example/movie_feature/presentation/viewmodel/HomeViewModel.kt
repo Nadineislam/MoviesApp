@@ -16,6 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,7 +46,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun searchMovies(query: String) =
+    private suspend fun searchMovies(query: String) =
         getTrendingData(
             useCase = searchMovieUseCase,
             onSuccess = { response ->
@@ -56,7 +57,7 @@ class HomeViewModel @Inject constructor(
         )
 
 
-    private fun getTrendingMovies() {
+    private suspend fun getTrendingMovies() {
         getTrendingData(
             useCase = trendingMoviesUseCase,
             onSuccess = { response ->
@@ -73,7 +74,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun getTrendingTvShows() {
+    private suspend fun getTrendingTvShows() {
         getTrendingData(
             useCase = trendingTvUseCase,
             onSuccess = { response ->
@@ -90,7 +91,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun getTrendingPeople() {
+    private suspend fun getTrendingPeople() {
         getTrendingData(
             useCase = trendingPeopleUseCase,
             onSuccess = { response ->
@@ -131,30 +132,47 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun <T> getTrendingData(
+    suspend fun <T> getTrendingData(
         useCase: AsyncUseCase<T>,
         onSuccess: (T) -> Unit,
         param: String? = null,
+    ) {
+        withContext(Dispatchers.Main) {
+            _stateRendererMutableState.value = StateRenderer.LoadingPopup(homeViewState)
+        }
 
-        ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _stateRendererMutableState.value =
-                StateRenderer.LoadingPopup(homeViewState)
-
+        try {
             useCase.execute(
                 success = { response ->
-                    onSuccess(response)
+                    withContext(Dispatchers.Main) {
+                        onSuccess(response)
+                    }
                 },
                 error = { errorMessage ->
-                    _stateRendererMutableState.value =
-                        StateRenderer.ErrorFullScreen(homeViewState, errorMessage)
+                    withContext(Dispatchers.Main) {
+                        _stateRendererMutableState.value =
+                            StateRenderer.ErrorFullScreen(homeViewState, errorMessage)
+                    }
                 },
                 empty = {
-                    _stateRendererMutableState.value = StateRenderer.Empty(homeViewState)
+                    withContext(Dispatchers.Main) {
+                        _stateRendererMutableState.value = StateRenderer.Empty(homeViewState)
+                    }
                 },
-                param = param,
-
-                )
+                param = param
+            )
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                _stateRendererMutableState.value =
+                    StateRenderer.ErrorFullScreen(
+                        homeViewState,
+                        com.example.domain.model.ErrorMessage(
+                            -1,
+                            e.message ?: "Unexpected error occurred",
+                            emptyList()
+                        )
+                    )
+            }
         }
     }
 

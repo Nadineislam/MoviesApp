@@ -33,7 +33,7 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun TvItem(tv: Tv, navController: NavController) {
     val encodedMovieName = URLEncoder.encode(tv.name, StandardCharsets.UTF_8.toString())
-    val encodedMoviePoster = URLEncoder.encode(tv.poster, StandardCharsets.UTF_8.toString())
+    val encodedMoviePoster = URLEncoder.encode(tv.poster?: "", StandardCharsets.UTF_8.toString())
     val encodedMovieOverview =
         URLEncoder.encode(tv.overView, StandardCharsets.UTF_8.toString())
     val encodedMovieVote =
@@ -43,8 +43,7 @@ fun TvItem(tv: Tv, navController: NavController) {
             .padding(8.dp)
             .background(Color.White)
             .clickable {
-                navController.navigate(
-                    "movie_details_screen/$encodedMovieName/$encodedMoviePoster/$encodedMovieOverview/$encodedMovieVote"
+                navController.navigate(Screens.MovieDetails.createRoute(encodedMovieName, encodedMoviePoster, encodedMovieOverview, encodedMovieVote)
                 )
             },
         shape = RoundedCornerShape(8.dp),

@@ -33,7 +33,7 @@ fun BottomNavGraph(
             SearchScreen(navController = navController)
         }
         composable(
-            route = "movies_category_screen/{categoryId}",
+            route = Screens.MoviesCategory.route,
             arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
         ) { backStackEntry ->
             val categoryId = backStackEntry.arguments?.getInt("categoryId")
@@ -42,7 +42,7 @@ fun BottomNavGraph(
             }
         }
         composable(
-            route = "tv_category_screen/{categoryId}",
+            route = Screens.TvCategory.route,
             arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
         ) { backStackEntry ->
             val categoryId = backStackEntry.arguments?.getInt("categoryId")
@@ -51,7 +51,7 @@ fun BottomNavGraph(
             }
         }
         composable(
-            route = "movie_details_screen/{movieName}/{moviePoster}/{movieOverview}/{movieVote}",
+            route = Screens.MovieDetails.route,
             arguments = listOf(
                 navArgument("movieName") { type = NavType.StringType },
                 navArgument("moviePoster") { type = NavType.StringType },
@@ -85,7 +85,7 @@ fun BottomNavGraph(
             )
         }
         composable(
-            route = "people_details_screen/{personName}/{personPoster}",
+            route = Screens.PeopleDetails.route,
             arguments = listOf(
                 navArgument("personName") { type = NavType.StringType },
                 navArgument("personPoster") { type = NavType.StringType }

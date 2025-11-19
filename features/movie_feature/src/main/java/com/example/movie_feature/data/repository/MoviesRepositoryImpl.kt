@@ -4,6 +4,9 @@ package com.example.movie_feature.data.repository
 import com.example.data.mapper.toDomain
 import com.example.data.source.NetworkDataSource
 import com.example.domain.result.OutCome
+import com.example.domain.result.map
+import com.example.movie_feature.data.mappers.toCategoriesModel
+import com.example.movie_feature.data.mappers.toMoviesModel
 import com.example.movie_feature.data.remote.MoviesService
 import com.example.movie_feature.domain.repository.MoviesRepository
 import javax.inject.Inject
@@ -14,13 +17,13 @@ class MoviesRepositoryImpl @Inject constructor(private val networkDataSource: Ne
         request = { getMoviesCategoriesList() },
         onSuccess = { response, _ -> OutCome.success(response) },
         onError = { errorResponse, code -> OutCome.error(errorResponse.toDomain(code)) }
-    )
+    ).map { it.toCategoriesModel() }
 
     override suspend fun getMovieCategoryList(page: Int, categoryId: Int) =
         networkDataSource.performRequest(
             request = { getMovieCategoryList(page = page, categoryId = categoryId) },
             onSuccess = { response, _ -> OutCome.success(response) },
             onError = { errorResponse, code -> OutCome.error(errorResponse.toDomain(code)) }
-        )
+        ).map { it.toMoviesModel() }
 
 }

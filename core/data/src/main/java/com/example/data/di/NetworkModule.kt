@@ -46,7 +46,6 @@ class NetworkModule {
     return ApiKeyInterceptor(apiKey)
   }
 
-  // ok http factory
   @Provides
   @Singleton
   fun provideOkHttpCallFactory(
@@ -74,8 +73,7 @@ class NetworkModule {
   fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     val builder = Retrofit.Builder()
       .baseUrl(BuildConfig.BASE_URL)
-      .baseUrl("https://api.themoviedb.org/3/")
-      .client(okHttpClient)
+        .client(okHttpClient)
       .addConverterFactory(GsonConverterFactory.create())
       .addCallAdapterFactory(CoroutineCallAdapterFactory())
     return builder.build()
