@@ -50,13 +50,13 @@ private val gson: Gson,
                     }
                 } else {
                     // its success but body equal to null or its empty "Unit"
-                    val location =
-                        response.headers()[HEADER_LOCATION]
-                    if (location != null) {
-                        return onRedirect(location, responseCode)
-                    } else {
+//                    val location =
+//                        response.headers()[HEADER_LOCATION]
+//                    if (location != null) {
+//                        return onRedirect(location, responseCode)
+//                    } else {
                         return onEmpty()
-                    }
+             //       }
                 }
             } else if (errorBody.isNullOrBlank()) {
                 return onError(getDefaultErrorResponse(), responseCode)

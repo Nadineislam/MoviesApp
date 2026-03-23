@@ -22,7 +22,7 @@ import coil.compose.AsyncImage
 import com.example.core.utils.Constants
 
 @Composable
-fun MovieDetailsScreen(
+fun MovieDetailScreen(
     movieName: String,
     moviePoster: String,
     movieOverview: String,

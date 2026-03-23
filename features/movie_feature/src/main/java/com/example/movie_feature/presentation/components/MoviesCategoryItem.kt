@@ -25,23 +25,22 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.core.utils.Constants
 import com.example.movie_feature.domain.models.Movies
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun MovieItem(movie: Movies, navController: NavController) {
-    val encodedMovieName = URLEncoder.encode(movie.name, StandardCharsets.UTF_8.toString())
-    val encodedMoviePoster = URLEncoder.encode(movie.posterPath, StandardCharsets.UTF_8.toString())
-    val encodedMovieOverview = URLEncoder.encode(movie.overView, StandardCharsets.UTF_8.toString())
-    val encodedMovieVote =
-        URLEncoder.encode(movie.voteAverage.toString(), StandardCharsets.UTF_8.toString())
     Card(
         modifier = Modifier
             .padding(8.dp)
             .background(Color.White)
             .clickable {
 
-                navController.navigate(route = Screens.MovieDetails.createRoute(encodedMovieName, encodedMoviePoster, encodedMovieOverview, encodedMovieVote)
+                navController.navigate(
+                    MovieDetailsScreen(
+                        movieName = movie.name,
+                        moviePoster = movie.posterPath ?: "",
+                        movieOverview = movie.overView,
+                        movieVote = movie.voteAverage.toString()
+                    )
                 )
             },
         shape = RoundedCornerShape(8.dp),

@@ -3,12 +3,9 @@ package com.example.movie_feature.presentation.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import java.net.URLDecoder
-import java.nio.charset.StandardCharsets
+import androidx.navigation.toRoute
 
 @Composable
 fun BottomNavGraph(
@@ -32,75 +29,30 @@ fun BottomNavGraph(
         composable(BottomBarScreen.Search.route) {
             SearchScreen(navController = navController)
         }
-        composable(
-            route = Screens.MoviesCategory.route,
-            arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val categoryId = backStackEntry.arguments?.getInt("categoryId")
-            categoryId?.let {
-                MoviesCategoryScreen(categoryId = it, navController = navController)
-            }
+        composable<MoviesCategoryScreen> { backStackEntry ->
+            val args=backStackEntry.toRoute<MoviesCategoryScreen>()
+                MoviesCategoryScreen(categoryId = args.categoryId, navController = navController)
         }
-        composable(
-            route = Screens.TvCategory.route,
-            arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val categoryId = backStackEntry.arguments?.getInt("categoryId")
-            categoryId?.let {
-                TvCategoryScreen(categoryId = it, navController = navController)
-            }
+        composable<TvCategoryScreen> { backStackEntry ->
+            val args=backStackEntry.toRoute<TvCategoryScreen>()
+            TvCategoryScreen(categoryId = args.categoryId, navController = navController)
         }
-        composable(
-            route = Screens.MovieDetails.route,
-            arguments = listOf(
-                navArgument("movieName") { type = NavType.StringType },
-                navArgument("moviePoster") { type = NavType.StringType },
-                navArgument("movieOverview") { type = NavType.StringType },
-                navArgument("movieVote") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-
-            val movieName = URLDecoder.decode(
-                backStackEntry.arguments?.getString("movieName"),
-                StandardCharsets.UTF_8.toString()
-            )
-            val moviePoster = URLDecoder.decode(
-                backStackEntry.arguments?.getString("moviePoster"),
-                StandardCharsets.UTF_8.toString()
-            )
-            val movieOverview = URLDecoder.decode(
-                backStackEntry.arguments?.getString("movieOverview"),
-                StandardCharsets.UTF_8.toString()
-            )
-            val movieVote = URLDecoder.decode(
-                backStackEntry.arguments?.getString("movieVote"),
-                StandardCharsets.UTF_8.toString()
+        composable<MovieDetailsScreen> { entry ->
+            val args = entry.toRoute<MovieDetailsScreen>()
+            MovieDetailScreen(
+                movieName = args.movieName,
+                moviePoster = args.moviePoster,
+                movieOverview = args.movieOverview,
+                movieVote = args.movieVote
             )
 
-            MovieDetailsScreen(
-                movieName = movieName,
-                moviePoster = moviePoster,
-                movieOverview = movieOverview,
-                movieVote = movieVote
-            )
         }
-        composable(
-            route = Screens.PeopleDetails.route,
-            arguments = listOf(
-                navArgument("personName") { type = NavType.StringType },
-                navArgument("personPoster") { type = NavType.StringType }
+        composable<PeopleDetailsScreen> { entry ->
+            val args = entry.toRoute<PeopleDetailsScreen>()
+            PersonDetailsScreen(
+                personName = args.personName,
+                personPoster = args.personPoster
             )
-        ) { backStackEntry ->
-            val personName = URLDecoder.decode(
-                backStackEntry.arguments?.getString("personName"),
-                StandardCharsets.UTF_8.toString()
-            )
-            val personPoster = URLDecoder.decode(
-                backStackEntry.arguments?.getString("personPoster"),
-                StandardCharsets.UTF_8.toString()
-            )
-
-            PersonDetailsScreen(personName = personName, personPoster = personPoster)
         }
     }
 }

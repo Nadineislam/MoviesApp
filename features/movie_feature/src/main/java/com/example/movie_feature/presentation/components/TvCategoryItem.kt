@@ -27,23 +27,21 @@ import com.example.core.utils.Constants.Companion.IMAGE_BASE_URL
 import com.example.core.utils.Constants.Companion.PIC_POSTER_PATH
 
 import com.example.movie_feature.domain.models.Tv
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun TvItem(tv: Tv, navController: NavController) {
-    val encodedMovieName = URLEncoder.encode(tv.name, StandardCharsets.UTF_8.toString())
-    val encodedMoviePoster = URLEncoder.encode(tv.poster?: "", StandardCharsets.UTF_8.toString())
-    val encodedMovieOverview =
-        URLEncoder.encode(tv.overView, StandardCharsets.UTF_8.toString())
-    val encodedMovieVote =
-        URLEncoder.encode(tv.voteAverage.toString(), StandardCharsets.UTF_8.toString())
     Card(
         modifier = Modifier
             .padding(8.dp)
             .background(Color.White)
             .clickable {
-                navController.navigate(Screens.MovieDetails.createRoute(encodedMovieName, encodedMoviePoster, encodedMovieOverview, encodedMovieVote)
+                navController.navigate(
+                    MovieDetailsScreen(
+                        movieName = tv.name,
+                        moviePoster = tv.poster ?: "",
+                        movieOverview = tv.overView,
+                        movieVote = tv.voteAverage.toString()
+                    )
                 )
             },
         shape = RoundedCornerShape(8.dp),

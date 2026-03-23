@@ -31,8 +31,6 @@ import com.example.core.utils.Constants.Companion.PIC_POSTER_PATH
 import com.example.movie_feature.domain.models.Movies
 import com.example.movie_feature.domain.models.People
 import com.example.movie_feature.domain.models.Tv
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun TrendingList(items: List<Any>, navController: NavController) {
@@ -47,61 +45,15 @@ fun TrendingList(items: List<Any>, navController: NavController) {
                         .clickable {
                             when (item) {
                                 is People -> {
-                                    val encodedName = URLEncoder.encode(
-                                        item.name,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    val encodedPoster = URLEncoder.encode(
-                                        item.poster,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-
-                                    navController.navigate(Screens.PeopleDetails.createRoute(personName = encodedName, personPoster = encodedPoster)
-                                    )
+                                    navController.navigate(PeopleDetailsScreen(personName = item.name, personPoster = item.poster?:""))
                                 }
 
                                 is Tv -> {
-                                    val encodedName = URLEncoder.encode(
-                                        item.name,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    val encodedPoster = URLEncoder.encode(
-                                        item.poster,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    val encodedOverview = URLEncoder.encode(
-                                        item.overView,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    val encodedVote = URLEncoder.encode(
-                                        item.voteAverage.toString(),
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-
-                                    navController.navigate(Screens.MovieDetails.createRoute(movieName = encodedName, moviePoster = encodedPoster, movieOverview = encodedOverview, movieVote = encodedVote)
-                                    )
+                                    navController.navigate(MovieDetailsScreen(movieName = item.name, moviePoster = item.poster?:"", movieOverview = item.overView, movieVote = item.voteAverage.toString()))
                                 }
 
                                 is Movies -> {
-                                    val encodedName = URLEncoder.encode(
-                                        item.name,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    val encodedPoster = URLEncoder.encode(
-                                        item.posterPath,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    val encodedOverview = URLEncoder.encode(
-                                        item.overView,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    val encodedVote = URLEncoder.encode(
-                                        item.voteAverage.toString(),
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-
-                                    navController.navigate(Screens.MovieDetails.createRoute(movieName = encodedName, moviePoster = encodedPoster, movieOverview = encodedOverview, movieVote = encodedVote)
-                                    )
+                                    navController.navigate(MovieDetailsScreen(movieName = item.name, moviePoster = item.posterPath?:"", movieOverview = item.overView, movieVote = item.voteAverage.toString()))
                                 }
 
                                 else -> {
